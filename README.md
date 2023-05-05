@@ -5,6 +5,6 @@ Platform for job posts. Create, update, delete jobs, and apply for a job.
 
 TRELLO [Trello](https://trello.com/b/ZCjCuhEB/microtasks)
 
-WIREFRAME [Wireframe](https://whimsical.com/magic-chef-wireframe-B48yXvFYpwDH9TVwXqfeeX)
+WIREFRAME [Wireframe](https://whimsical.com/wireframe-capstone-TLD7PwEH6WZodMutGDcDeA)
 
 ERD [ERD](https://whimsical.com/erd-VeSzgqKYV4DHfaFJLbnYsm)
