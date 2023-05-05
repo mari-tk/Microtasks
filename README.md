@@ -7,4 +7,4 @@ TRELLO [Trello](https://trello.com/b/ZCjCuhEB/microtasks)
 
 WIREFRAME [Wireframe](https://whimsical.com/wireframe-capstone-TLD7PwEH6WZodMutGDcDeA)
 
-ERD [ERD](https://whimsical.com/erd-VeSzgqKYV4DHfaFJLbnYsm)
+ERD [ERD](https://whimsical.com/erd-capstone-VeSzgqKYV4DHfaFJLbnYsm)
