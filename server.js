@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken');
 require('./config/database');
 
 const app = express();
+const server = http.createServer(app);
 
 //middleware
 app.use(logger('dev'));
@@ -16,7 +17,6 @@ app.use(require('./config/checkToken'));
 
 //routes
 app.use('/api/users', require('./routes/api/users'));
-app.use('/api/chats', require('./routes/api/chats'));
 
 //catch all
 app.get('/*', function (req, res) {
