@@ -17,6 +17,7 @@ app.use(require('./config/checkToken'));
 
 //routes
 app.use('/api/users', require('./routes/api/users'));
+app.use('/api/jobs', require('./routes/api/jobs'));
 
 //catch all
 app.get('/*', function (req, res) {

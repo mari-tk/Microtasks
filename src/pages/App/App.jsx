@@ -5,6 +5,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import NavBar from '../../components/NavBar/NavBar'
 import { getUser } from '../../utilities/users-service';
 import { Container } from '@mui/material';
+import JobsPage from '../JobsPage/JobsPage';
 
 export default function App() {
 
@@ -27,6 +28,11 @@ export default function App() {
        {user ? 
         <>
           <NavBar user={user} updateUser={updateUser}/>
+          <Routes>
+            
+            <Route path="/jobs" element={<JobsPage user={user}/>}/>
+            <Route path="/*" element={<Navigate to="/jobs" />} />
+          </Routes>
         </> 
         :
         <AuthPage setUser={updateUser} />
