@@ -1,20 +1,29 @@
-import { useState } from 'react';
+import { useState, useEffect} from 'react';
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import * as jobsAPI from '../../utilities/jobs-api'
 import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
-export default function NewJobPage({setJobs}) {
+export default function EditJobPage() {
 
+  const [job, setJob] = useState([]);
+  const { id } = useParams();
+  
+  useEffect(function() {
+    async function getJob() {
+      const thisJob = await jobsAPI.getJob(id);
+      console.log('HERRERRERERER');
+      console.log(thisJob);
+      setJob(thisJob);
+    }
+    getJob();
+  }, []);
+
+  console.log(job);
   const navigate = useNavigate()
-
-
-  const [job, setJob] = useState({
-    name: '',
-    description: ''
-  });
 
   const [error, setError] = useState('');
 
@@ -27,8 +36,7 @@ export default function NewJobPage({setJobs}) {
     // Prevent form from being submitted to the server
     evt.preventDefault();
     try {
-      const newJob = await jobsAPI.createJob(job);
-      setJobs(jobs => [...jobs, newJob]);
+      const editedJob = await jobsAPI.editJob(job);
       navigate('/jobs')
     } catch (e) {
       console.error(e);
@@ -51,7 +59,6 @@ export default function NewJobPage({setJobs}) {
           required
           fullWidth
           id="jobName"
-          label="Job Name"
           name="name"
           autoComplete='off'
           autoFocus
@@ -63,7 +70,6 @@ export default function NewJobPage({setJobs}) {
           required
           fullWidth
           id="description"
-          label="Job Description"
           name="description"
           autoComplete='off'
           value={job.description}
@@ -75,7 +81,7 @@ export default function NewJobPage({setJobs}) {
           variant="contained"
           sx={{ mt: 3, mb: 2 }}
         >
-          Post Job
+          Update Job 
         </Button>
         <Button
           href="/jobs"

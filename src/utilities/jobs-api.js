@@ -10,3 +10,11 @@ export function createJob(jobData) {
 export function getAllJobs() {
   return sendRequest(BASE_URL);
 }
+
+export function getJob(id) {
+  return sendRequest(`${BASE_URL}/${id}`);
+}
+
+export function editJob(id) {
+  return sendRequest(`${BASE_URL}/${id}/edit`, 'PUT', id);
+}

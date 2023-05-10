@@ -8,6 +8,8 @@ import { Container } from '@mui/material';
 import JobsPage from '../JobsPage/JobsPage';
 import * as jobsAPI from '../../utilities/jobs-api'
 import NewJobPage from '../NewJobPage/NewJobPage';
+import ViewJobPage from '../ViewJobPage/ViewJobPage';
+import EditJobPage from '../EditJobPage/EditJobPage';
 
 export default function App() {
 
@@ -41,6 +43,8 @@ export default function App() {
         <>
           <NavBar user={user} updateUser={updateUser}/>
           <Routes>
+            <Route path="/jobs/:id/edit" element={<EditJobPage/>} /> 
+            <Route path="/jobs/:id" element={<ViewJobPage/>} />
             <Route path="/jobs/new" element={<NewJobPage user={user} setJobs={setJobs}/>} />
             <Route path="/jobs" element={<JobsPage user={user} jobs={jobs}/>}/>
             <Route path="/" element={<Navigate to="/jobs" />} />
