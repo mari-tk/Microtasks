@@ -34,6 +34,18 @@ export default function ViewJobPage() {
     getJob();
   }, []);
 
+  async function handleDelete(evt) {
+    // Prevent form from being submitted to the server
+    evt.preventDefault();
+    try {
+      await jobsAPI.deleteJob(job);
+      navigate('/jobs')
+    } catch (e) {
+      console.error(e);
+      setError('Job was not deleted - Try Again');
+    }
+  }
+
   return (
     <div>ViewJobPage
       <Box
@@ -41,16 +53,13 @@ export default function ViewJobPage() {
           border: '2px',
           width: 600,
           backgroundColor: 'primary.light',
-          '&:hover': {
-            backgroundColor: 'primary.main',
-            opacity: [0.9, 0.8, 0.7],
-          },
         }}
       >
       <div>Job {job.name} by {job.userId.name}</div>
       <div>Description {job.description}</div>
       <div>Created {job.createdAt}</div>
       <Button href={`/jobs/${job._id}/edit`}>Edit job</Button>
+      <Button onSubmit={handleDelete}>Delete job</Button>
     </Box>
     </div>
   )
