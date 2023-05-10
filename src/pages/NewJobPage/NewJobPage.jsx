@@ -5,8 +5,12 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import * as jobsAPI from '../../utilities/jobs-api'
+import { useNavigate } from 'react-router-dom';
 
-export default function NewJobPage() {
+export default function NewJobPage({setJobs}) {
+
+  const navigate = useNavigate()
+
 
   const [job, setJob] = useState({
     name: '',
@@ -25,7 +29,8 @@ export default function NewJobPage() {
     evt.preventDefault();
     try {
       const newJob = await jobsAPI.createJob(job);
-      setJob(newJob);
+      setJobs(jobs => [...jobs, newJob]);
+      navigate('/jobs')
     } catch (e) {
       console.error(e);
       setError('Job was not created - Try Again');
