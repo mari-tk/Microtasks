@@ -39,16 +39,16 @@ async function getAllJobs(req, res) {
 // }
 
 async function showJob(req, res) {
-  console.log('HEREEEEEE');
   const job = await Job.findById(req.params.id);
   await job.populate('userId');
-  console.log(job);
   res.json(job);
 }
 
 async function deleteJob(req, res) {
+  const job = await Job.findById(req.params.id);
+  console.log(job);
   Job.deleteOne(req.params.id);
-  res.redirect('/jobs')
+  res.status(200).json(job);
 }
 
 async function editJob(req, res) {

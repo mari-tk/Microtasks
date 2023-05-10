@@ -20,5 +20,6 @@ export function editJob(id) {
 }
 
 export function deleteJob(id) {
-  return sendRequest(`${BASE_URL}/${id}`, 'DELETE', id);
+  console.log(id);
+  return sendRequest(`${BASE_URL}/${id}`, 'DELETE');
 }

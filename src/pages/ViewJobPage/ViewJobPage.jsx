@@ -4,8 +4,10 @@ import { useParams } from 'react-router-dom';
 import * as jobsAPI from '../../utilities/jobs-api'
 import { Box } from '@mui/system';
 import { Button } from '@mui/base';
+import { useNavigate } from 'react-router-dom';
 
 export default function ViewJobPage() {
+  const navigate = useNavigate()
   const [job, setJob] = useState({
     "_id": "",
     "name": "",
@@ -21,7 +23,9 @@ export default function ViewJobPage() {
     "createdAt": "",
     "updatedAt": ""
 });
+  const [error, setError] = useState('');
   const { id } = useParams();
+
   
   useEffect(function() {
     async function getJob() {
@@ -38,7 +42,7 @@ export default function ViewJobPage() {
     // Prevent form from being submitted to the server
     evt.preventDefault();
     try {
-      await jobsAPI.deleteJob(job);
+      await jobsAPI.deleteJob(id);
       navigate('/jobs')
     } catch (e) {
       console.error(e);
@@ -59,7 +63,8 @@ export default function ViewJobPage() {
       <div>Description {job.description}</div>
       <div>Created {job.createdAt}</div>
       <Button href={`/jobs/${job._id}/edit`}>Edit job</Button>
-      <Button onSubmit={handleDelete}>Delete job</Button>
+      <Button onClick={handleDelete}>Delete job</Button>
+      <p className="error-message">&nbsp;{error}</p>
     </Box>
     </div>
   )
