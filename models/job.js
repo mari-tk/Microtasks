@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const messageSchema = new Schema({
+const jobSchema = new Schema({
   name: { 
     type: String, 
     required: true 
@@ -19,4 +19,4 @@ const messageSchema = new Schema({
   timestamps: true
 });
 
-module.exports = mongoose.model('Post', postSchema);
+module.exports = mongoose.model('Job', jobSchema);

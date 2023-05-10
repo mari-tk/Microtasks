@@ -6,6 +6,7 @@ import NavBar from '../../components/NavBar/NavBar'
 import { getUser } from '../../utilities/users-service';
 import { Container } from '@mui/material';
 import JobsPage from '../JobsPage/JobsPage';
+import * as jobsAPI from '../../utilities/jobs-api'
 
 export default function App() {
 
@@ -14,6 +15,18 @@ export default function App() {
   function updateUser(userState){
     setUser(userState)
   }
+
+  const [jobs, setJobs] = useState([]);
+
+
+  useEffect(function() {
+    async function getJobs() {
+      const jobs = await jobsAPI.getAllJobs();
+      console.log('here');
+      setJobs(jobs);
+    }
+    getJobs();
+  }, []);
 
   return (
     <Container
@@ -30,8 +43,8 @@ export default function App() {
           <NavBar user={user} updateUser={updateUser}/>
           <Routes>
             
-            <Route path="/jobs" element={<JobsPage user={user}/>}/>
-            <Route path="/*" element={<Navigate to="/jobs" />} />
+            <Route path="/jobs" element={<JobsPage user={user} jobs={jobs}/>}/>
+            <Route path="/" element={<Navigate to="/jobs" />} />
           </Routes>
         </> 
         :
@@ -40,4 +53,3 @@ export default function App() {
     </Container>
   )
 }
-

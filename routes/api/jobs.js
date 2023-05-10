@@ -3,7 +3,7 @@ const router = express.Router();
 const jobsCtrl = require('../../controllers/api/jobs');
 
 // POST /api/jobs
-router.post('/', jobsCtrl.createJob);
 router.get('/', jobsCtrl.getAllJobs);
+router.post('/new', jobsCtrl.createJob);
 
 module.exports = router;
