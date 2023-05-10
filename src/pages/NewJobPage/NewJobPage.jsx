@@ -78,6 +78,15 @@ export default function NewJobPage({setJobs}) {
         >
           Post Job
         </Button>
+        <Button
+          href="/jobs"
+          type="submit"
+          fullWidth
+          variant="contained"
+          sx={{ mt: 3, mb: 2 }}
+        >
+          Cancel
+        </Button>
         <p className="error-message">&nbsp;{error}</p>
       </Box>
     </Box>
