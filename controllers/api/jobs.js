@@ -8,7 +8,13 @@ module.exports = {
 
 async function createJob(req, res) {
   try {
-    const job = await Job.create(req.body)
+    const job = await Job.create({
+      userId: req.user._id,
+      name: req.body.name,
+      description: req.body.description
+    })
+    await job.populate('userId');
+    console.log(job);
     res.json(job)
   } catch (error) {
     res.status(400).json(error)
@@ -17,9 +23,7 @@ async function createJob(req, res) {
 
 async function getAllJobs(req, res) {
   try {
-    console.log('HERE');
     const jobs = await Job.find({});
-    console.log(jobs);
     res.json(jobs);
   } catch (error) {
     res.status(400).json(error);
