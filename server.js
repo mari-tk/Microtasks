@@ -1,13 +1,10 @@
 const express = require('express');
 const path = require('path');
-const http = require('http');
 const logger = require('morgan');
 require('dotenv').config();
-const jwt = require('jsonwebtoken');
 require('./config/database');
 
 const app = express();
-const server = http.createServer(app);
 
 //middleware
 app.use(logger('dev'));
@@ -18,6 +15,9 @@ app.use(require('./config/checkToken'));
 //routes
 app.use('/api/users', require('./routes/api/users'));
 
+const ensureLoggedIn = require('./config/ensureLoggedIn');
+app.use('/api/jobs', ensureLoggedIn, require('./routes/api/jobs'));
+
 //catch all
 app.get('/*', function (req, res) {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
@@ -25,6 +25,6 @@ app.get('/*', function (req, res) {
 
 //listener
 const port = process.env.PORT || 3000;
-server.listen(port, function () {
+app.listen(port, function () {
   console.log(`Express app running on port ${port}`)
 });

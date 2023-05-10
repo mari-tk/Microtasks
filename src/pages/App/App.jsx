@@ -5,6 +5,9 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import NavBar from '../../components/NavBar/NavBar'
 import { getUser } from '../../utilities/users-service';
 import { Container } from '@mui/material';
+import JobsPage from '../JobsPage/JobsPage';
+import * as jobsAPI from '../../utilities/jobs-api'
+import NewJobPage from '../NewJobPage/NewJobPage';
 
 export default function App() {
 
@@ -13,6 +16,16 @@ export default function App() {
   function updateUser(userState){
     setUser(userState)
   }
+
+  const [jobs, setJobs] = useState([]);
+
+  useEffect(function() {
+    async function getJobs() {
+      const jobs = await jobsAPI.getAllJobs();
+      setJobs(jobs);
+    }
+    getJobs();
+  }, []);
 
   return (
     <Container
@@ -27,6 +40,11 @@ export default function App() {
        {user ? 
         <>
           <NavBar user={user} updateUser={updateUser}/>
+          <Routes>
+            <Route path="/jobs/new" element={<NewJobPage user={user} setJobs={setJobs}/>} />
+            <Route path="/jobs" element={<JobsPage user={user} jobs={jobs}/>}/>
+            <Route path="/" element={<Navigate to="/jobs" />} />
+          </Routes>
         </> 
         :
         <AuthPage setUser={updateUser} />
@@ -34,4 +52,3 @@ export default function App() {
     </Container>
   )
 }
-

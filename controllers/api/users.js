@@ -10,8 +10,6 @@ module.exports = {
 async function create(req, res) {
   try {
     const user = await User.create(req.body)
-    console.log(user);
-    console.log("HERE");
     const token = createJWT(user)
     res.json(token)
   } catch (error) {
