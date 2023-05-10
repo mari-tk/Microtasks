@@ -29,10 +29,7 @@ export default function ViewJobPage() {
   
   useEffect(function() {
     async function getJob() {
-      console.log('HERRERRERERER');
       const thisJob = await jobsAPI.getJob(id);
-      console.log('HERRERRERERER');
-      console.log(thisJob);
       setJob(thisJob);
     }
     getJob();

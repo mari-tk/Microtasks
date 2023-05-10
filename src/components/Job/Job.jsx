@@ -3,7 +3,6 @@ import Box from '@mui/material/Box';
 import { Button } from '@mui/base';
 
 export default function Job({job}) {
-  console.log(job);
   return (
     <Box 
       sx={{

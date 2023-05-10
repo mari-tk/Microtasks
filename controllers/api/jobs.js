@@ -46,7 +46,6 @@ async function showJob(req, res) {
 
 async function deleteJob(req, res) {
   const job = await Job.findById(req.params.id);
-  console.log(job);
   Job.deleteOne(req.params.id);
   res.status(200).json(job);
 }

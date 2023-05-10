@@ -20,6 +20,5 @@ export function editJob(id) {
 }
 
 export function deleteJob(id) {
-  console.log(id);
   return sendRequest(`${BASE_URL}/${id}`, 'DELETE');
 }

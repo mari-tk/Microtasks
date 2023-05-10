@@ -15,14 +15,11 @@ export default function EditJobPage() {
   useEffect(function() {
     async function getJob() {
       const thisJob = await jobsAPI.getJob(id);
-      console.log('HERRERRERERER');
-      console.log(thisJob);
       setJob(thisJob);
     }
     getJob();
   }, []);
 
-  console.log(job);
   const navigate = useNavigate()
 
   const [error, setError] = useState('');
