@@ -10,15 +10,15 @@ export default function Job({job}) {
         width: 600,
         backgroundColor: 'primary.light',
         '&:hover': {
-          backgroundColor: 'primary.main',
-          opacity: [0.9, 0.8, 0.7],
+          backgroundColor: 'primary.main'
         },
       }}
     >
       <div>Job {job.name} by {job.userId.name}</div>
       <div>Description {job.description}</div>
       <div>Created {job.createdAt}</div>
-      <Button href={`/jobs/${job._id}`}>View job</Button>
+      <Button href={`/jobs/${job._id}`}>View job</Button> | 
+      <Button href={`/jobs/${job._id}`}>Apply for a job</Button>
     </Box>
   )
 }

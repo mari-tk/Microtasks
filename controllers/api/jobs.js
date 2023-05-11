@@ -26,7 +26,7 @@ async function createJob(req, res) {
 
 async function getAllJobs(req, res) {
   try {
-    const jobs = await Job.find({}).populate([{ path: 'userId' }]);
+    const jobs = await Job.find({}).sort({createdAt:-1}).populate([{ path: 'userId' }]);
     // await jobs.populate('userId');
     res.json(jobs);
   } catch (error) {
