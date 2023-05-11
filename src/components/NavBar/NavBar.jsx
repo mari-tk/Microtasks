@@ -33,6 +33,7 @@ export default function NavBar({user, updateUser}) {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Welcome to Microtasks, {user.name}
           </Typography>
+          <Button href="/jobs/new" color="inherit">Post new job</Button>
           <Button onClick={handleLogOut} color="inherit">Logout</Button>
         </Toolbar>
       </AppBar>

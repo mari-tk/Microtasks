@@ -13,7 +13,6 @@ export default function JobsPage({jobs}) {
         paddingTop: '64px',
       }}
     >
-      <Button href="/jobs/new">Post new job</Button>
       {jobs.map((j, idx) => <Job job={j} key={idx}/>)}
     </Container>
   )
