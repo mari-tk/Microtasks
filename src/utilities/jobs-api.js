@@ -15,8 +15,8 @@ export function getJob(id) {
   return sendRequest(`${BASE_URL}/${id}`);
 }
 
-export function editJob(id) {
-  return sendRequest(`${BASE_URL}/${id}`, 'PUT', id);
+export function editJob(job) {
+  return sendRequest(`${BASE_URL}/${job._id}`, 'PUT', job);
 }
 
 export function deleteJob(id) {

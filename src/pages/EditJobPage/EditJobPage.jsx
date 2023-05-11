@@ -37,7 +37,7 @@ export default function EditJobPage() {
       navigate('/jobs')
     } catch (e) {
       console.error(e);
-      setError('Job was not created - Try Again');
+      setError('Job was not updated - Try Again');
     }
   }
 

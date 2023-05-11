@@ -52,7 +52,9 @@ async function deleteJob(req, res) {
 
 async function editJob(req, res) {
   try {
-    const job = await Job.findById(req.params.id);
+    console.log(req.body);
+    const job =  await Job.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true });
+
     await job.populate('userId');
     res.json(job)
   } catch (error) {
