@@ -2,11 +2,18 @@ import React from 'react'
 import { useState, useEffect} from 'react';
 import { useParams } from 'react-router-dom';
 import * as jobsAPI from '../../utilities/jobs-api'
+import { styled } from '@mui/material/styles';
 import { Box } from '@mui/system';
 import { Button } from '@mui/base';
+import Grid from '@mui/material/Grid';
 import { useNavigate } from 'react-router-dom';
-import { CircularProgress } from '@mui/material';
+import List from '@mui/material/List';
+import Typography from '@mui/material/Typography';
+import { Avatar, CircularProgress, IconButton, ListItem, ListItemAvatar } from '@mui/material';
+import DescriptionIcon from '@mui/icons-material/Description';
+import ListItemText from '@mui/material/ListItemText';
 import JobApplicationForm from '../../components/JobApplicationForm/JobApplicationForm';
+import { CheckCircleOutline } from '@mui/icons-material';
 
 export default function ViewJobPage({user}) {
   const navigate = useNavigate()
@@ -14,7 +21,7 @@ export default function ViewJobPage({user}) {
   const [error, setError] = useState('');
   const [viewError, setViewError] = useState('');
   const { id } = useParams();
-  // const [jobApplications, setJobApplications] = useState();
+  const [jobApplications, setJobApplications] = useState();
   
   useEffect(function() {
     async function getJob() {
@@ -28,17 +35,17 @@ export default function ViewJobPage({user}) {
     getJob();
   }, []);
 
-//   useEffect(function() {
-//     async function getJobApplications() {
-//       try{
-//       const allJobApplications = await jobsAPI.getJobApplications(id);
-//       setJobApplications(allJobApplications);
-//       } catch (e) { 
-//         setViewError(e.message)
-//       }
-//     }
-//     getJobApplications();
-// }, []);
+  useEffect(function() {
+    async function getJobApplications() {
+      try{
+      const allJobApplications = await jobsAPI.getJobApplications(id);
+      setJobApplications(allJobApplications);
+      } catch (e) { 
+        setViewError(e.message)
+      }
+    }
+    getJobApplications();
+}, []);
 
   async function handleDelete(evt) {
     // Prevent form from being submitted to the server
@@ -75,6 +82,38 @@ export default function ViewJobPage({user}) {
         <Button onClick={handleDelete}>Delete job</Button>
         <p className="error-message">&nbsp;{error}</p>
         </Box>
+        <Grid item xs={12} md={6}>
+          <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
+            Job applications
+          </Typography>
+          {jobApplications ?
+            <Box>
+              <List>
+                {jobApplications.map((application, idx)=>                 
+                  <ListItem key = {idx}
+                    secondaryAction={
+                      <IconButton edge="end" aria-label="check">
+                        <CheckCircleOutline />
+                      </IconButton>
+                    }
+                  >
+                    <ListItemAvatar>
+                      <Avatar>
+                        <DescriptionIcon />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={application.userId}
+                      secondary={application.letter}
+                    />
+                  </ListItem> 
+                )}
+              </List>
+            </Box>
+            :
+            <div>No applications ... yet</div>
+          }
+        </Grid>
         <div>
           <JobApplicationForm user={user} job={job}/>
         </div>
