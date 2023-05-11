@@ -80,9 +80,10 @@ async function applyForJob(req, res) {
 
 async function getJobApplications(req, res) {
   try {
-    const applications = await JobApplication.find({}).sort({createdAt:-1});
+    const applications = await JobApplication.find({jobId: req.params.id}).sort({createdAt:-1}).populate('userId');
     // await applications.populate('userId');
-    res.json(applications || {});
+    console.log(applications);
+    res.json(applications);
   } catch (error) {
     res.json({});
   }

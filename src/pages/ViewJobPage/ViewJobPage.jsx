@@ -103,7 +103,7 @@ export default function ViewJobPage({user}) {
                       </Avatar>
                     </ListItemAvatar>
                     <ListItemText
-                      primary={application.userId}
+                      primary={application.userId.name}
                       secondary={application.letter}
                     />
                   </ListItem> 
