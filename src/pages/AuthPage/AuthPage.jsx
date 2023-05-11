@@ -16,20 +16,7 @@ export default function AuthPage({setUser}) {
 
   return (
     <Grid container component="main" sx={{ height: '100vh' }}>
-      <Grid
-        item
-        xs={false}
-        sm={4}
-        md={7}
-        sx={{
-        //Photo by Pew Nguyen: https://www.pexels.com/photo/wood-building-architecture-travel-15847199/
-        backgroundImage: 'url(pexels-pew-nguyen-15847199.jpg)',
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        }}
-      />
-      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+      <Grid item xs={12} sm={6} md={8} component={Paper} elevation={6} square>
         <Box
           sx={{
           my: 8,

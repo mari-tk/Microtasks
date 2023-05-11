@@ -14,6 +14,7 @@ export default function ViewJobPage({user}) {
   const [error, setError] = useState('');
   const [viewError, setViewError] = useState('');
   const { id } = useParams();
+  // const [jobApplications, setJobApplications] = useState();
   
   useEffect(function() {
     async function getJob() {
@@ -26,6 +27,18 @@ export default function ViewJobPage({user}) {
     }
     getJob();
   }, []);
+
+//   useEffect(function() {
+//     async function getJobApplications() {
+//       try{
+//       const allJobApplications = await jobsAPI.getJobApplications(id);
+//       setJobApplications(allJobApplications);
+//       } catch (e) { 
+//         setViewError(e.message)
+//       }
+//     }
+//     getJobApplications();
+// }, []);
 
   async function handleDelete(evt) {
     // Prevent form from being submitted to the server
