@@ -22,3 +22,11 @@ export function editJob(job) {
 export function deleteJob(id) {
   return sendRequest(`${BASE_URL}/${id}`, 'DELETE');
 }
+
+export function applyForJob(application) {
+  return sendRequest(`${BASE_URL}/${application.jobId}/apply`, 'POST', application);
+}
+
+export function deleteJobApplication(id) {
+  return sendRequest(`${BASE_URL}/${id}`, 'DELETE');
+}

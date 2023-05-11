@@ -6,8 +6,9 @@ import { Box } from '@mui/system';
 import { Button } from '@mui/base';
 import { useNavigate } from 'react-router-dom';
 import { CircularProgress } from '@mui/material';
+import JobApplicationForm from '../../components/JobApplicationForm/JobApplicationForm';
 
-export default function ViewJobPage() {
+export default function ViewJobPage({user}) {
   const navigate = useNavigate()
   const [job, setJob] = useState();
   const [error, setError] = useState('');
@@ -54,13 +55,16 @@ export default function ViewJobPage() {
           backgroundColor: 'primary.light',
         }}
       >
-      <div>Job {job.name} by {job.userId.name}</div>
-      <div>Description {job.description}</div>
-      <div>Created {job.createdAt}</div>
-      <Button href={`/jobs/${job._id}/edit`}>Edit job</Button>
-      <Button onClick={handleDelete}>Delete job</Button>
-      <p className="error-message">&nbsp;{error}</p>
-    </Box>
+        <div>Job {job.name} by {job.userId.name}</div>
+        <div>Description {job.description}</div>
+        <div>Created {job.createdAt}</div>
+        <Button href={`/jobs/${job._id}/edit`}>Edit job</Button>
+        <Button onClick={handleDelete}>Delete job</Button>
+        <p className="error-message">&nbsp;{error}</p>
+        </Box>
+        <div>
+          <JobApplicationForm user={user} job={job}/>
+        </div>
     </div>
   )
 }

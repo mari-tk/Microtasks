@@ -44,7 +44,7 @@ export default function App() {
           <NavBar user={user} updateUser={updateUser}/>
           <Routes>
             <Route path="/jobs/:id/edit" element={<EditJobPage/>} /> 
-            <Route path="/jobs/:id" element={<ViewJobPage/>} />
+            <Route path="/jobs/:id" element={<ViewJobPage user={user}/>} />
             <Route path="/jobs/new" element={<NewJobPage user={user} setJobs={setJobs}/>} />
             <Route path="/jobs" element={<JobsPage user={user} jobs={jobs}/>}/>
             <Route path="/" element={<Navigate to="/jobs" />} />

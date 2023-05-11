@@ -12,4 +12,8 @@ router.get('/:id/edit', jobsCtrl.editJob);
 router.get('/:id', jobsCtrl.showJob);
 router.delete('/:id', jobsCtrl.deleteJob);
 router.put('/:id', jobsCtrl.editJob);
+
+//job applications
+router.post('/:id/apply', jobsCtrl.applyForJob);
+
 module.exports = router;

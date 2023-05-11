@@ -1,5 +1,5 @@
 const Job = require('../../models/job')
-const User = require('../../models/user')
+const JobApplication = require('../../models/jobApplication')
 
 module.exports = {
   createJob,
@@ -7,6 +7,7 @@ module.exports = {
   showJob,
   deleteJob,
   editJob,
+  applyForJob
   // newJob
 }
 
@@ -61,6 +62,16 @@ async function editJob(req, res) {
 
     await job.populate('userId');
     res.json(job)
+  } catch (error) {
+    res.status(400).json(error)
+  }
+}
+
+async function applyForJob(req, res) {
+  try {
+    const jobApplication = await JobApplication.create(req.body)
+    await jobApplication.populate('userId');
+    res.json(jobApplication);
   } catch (error) {
     res.status(400).json(error)
   }
