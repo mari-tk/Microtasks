@@ -34,20 +34,24 @@ async function getAllJobs(req, res) {
   }
 }
 
-// async function newJob(req, res) {
-//   res.render('jobs/new');
-// }
-
 async function showJob(req, res) {
+  try {
   const job = await Job.findById(req.params.id);
+  if (!job){
+    res.status(404).json({message: "Job not found"})
+    return
+  }
   await job.populate('userId');
-  res.json(job);
+  res.json(job)
+
+  } catch (error) {
+    res.status(400).json(error)
+  }
 }
 
 async function deleteJob(req, res) {
-  const job = await Job.findById(req.params.id);
-  Job.deleteOne(req.params.id);
-  res.status(200).json(job);
+  await Job.deleteOne({ _id: req.params.id });
+  res.status(200).json({});
 }
 
 async function editJob(req, res) {

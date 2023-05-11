@@ -5,32 +5,23 @@ import * as jobsAPI from '../../utilities/jobs-api'
 import { Box } from '@mui/system';
 import { Button } from '@mui/base';
 import { useNavigate } from 'react-router-dom';
+import { CircularProgress } from '@mui/material';
 
 export default function ViewJobPage() {
   const navigate = useNavigate()
-  const [job, setJob] = useState({
-    "_id": "",
-    "name": "",
-    "description": "",
-    "userId": {
-        "_id": "",
-        "name": "",
-        "email": "",
-        "createdAt": "",
-        "updatedAt": "",
-        "__v": 0
-    },
-    "createdAt": "",
-    "updatedAt": ""
-});
+  const [job, setJob] = useState();
   const [error, setError] = useState('');
+  const [viewError, setViewError] = useState('');
   const { id } = useParams();
-
   
   useEffect(function() {
     async function getJob() {
+      try{
       const thisJob = await jobsAPI.getJob(id);
       setJob(thisJob);
+      } catch (e) { 
+        setViewError(e.message)
+      }
     }
     getJob();
   }, []);
@@ -45,6 +36,14 @@ export default function ViewJobPage() {
       console.error(e);
       setError('Job was not deleted - Try Again');
     }
+  }
+
+  if (viewError){
+    return <p className="error-message">&nbsp;{viewError}</p>
+  }
+
+  if (!job) {
+    return <CircularProgress />
   }
 
   return (
