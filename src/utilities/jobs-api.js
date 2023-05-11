@@ -10,3 +10,15 @@ export function createJob(jobData) {
 export function getAllJobs() {
   return sendRequest(BASE_URL);
 }
+
+export function getJob(id) {
+  return sendRequest(`${BASE_URL}/${id}`);
+}
+
+export function editJob(job) {
+  return sendRequest(`${BASE_URL}/${job._id}`, 'PUT', job);
+}
+
+export function deleteJob(id) {
+  return sendRequest(`${BASE_URL}/${id}`, 'DELETE');
+}
