@@ -28,7 +28,6 @@ export default function ViewJobPage() {
 
   async function handleDelete(evt) {
     // Prevent form from being submitted to the server
-    evt.preventDefault();
     try {
       await jobsAPI.deleteJob(id);
       navigate('/jobs')
