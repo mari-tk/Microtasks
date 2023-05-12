@@ -2,7 +2,6 @@ import React from 'react'
 import { useState, useEffect} from 'react';
 import { useParams } from 'react-router-dom';
 import * as jobsAPI from '../../utilities/jobs-api'
-import { styled } from '@mui/material/styles';
 import { Box } from '@mui/system';
 import { Button } from '@mui/base';
 import Grid from '@mui/material/Grid';
@@ -58,6 +57,17 @@ export default function ViewJobPage({user}) {
     }
   }
 
+  async function handleHiring(id) {
+    // Prevent form from being submitted to the server
+    try {
+      await jobsAPI.hireApplicant(id);
+      navigate('/jobs')
+    } catch (e) {
+      console.error(e);
+      setError('Job was not deleted - Try Again');
+    }
+  }
+
   if (viewError){
     return <p className="error-message">&nbsp;{viewError}</p>
   }
@@ -92,7 +102,7 @@ export default function ViewJobPage({user}) {
                 {jobApplications.map((application, idx)=>                 
                   <ListItem key = {idx}
                     secondaryAction={
-                      <IconButton edge="end" aria-label="check">
+                      <IconButton onClick={handleHiring(application._id)} edge="end" aria-label="check">
                         <CheckCircleOutline />
                       </IconButton>
                     }

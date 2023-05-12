@@ -15,6 +15,7 @@ router.get('/:id/applications', jobsCtrl.getJobApplications);
 router.get('/:id/edit', jobsCtrl.editJob);
 router.get('/:id', jobsCtrl.showJob);
 router.delete('/:id', jobsCtrl.deleteJob);
+router.put('/:id/hire', jobsCtrl.hire);
 router.put('/:id', jobsCtrl.editJob);
 
 //job applications
