@@ -9,7 +9,8 @@ module.exports = {
   editJob,
   applyForJob,
   getJobApplications,
-  hire
+  hire,
+  showDashboard
   // newJob
 }
 
@@ -95,5 +96,15 @@ async function hire(req, res) {
     res.json(job)
   } catch (error) {
     res.status(400).json(error)
+  }
+}
+
+async function showDashboard(req, res) {
+  try {
+    console.log(req.params.id);
+    const applications = await Job.find({userId: req.params.id}).sort({createdAt:-1}).populate('jobId').populate('userId');
+    res.json(applications);
+  } catch (error) {
+    res.status(400).json(error);
   }
 }

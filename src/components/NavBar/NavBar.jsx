@@ -34,7 +34,7 @@ export default function NavBar({user, updateUser}) {
             Welcome to Microtasks, {user.name}
           </Typography>
           <Button href="/applications" color="inherit">Applied jobs</Button>
-          <Button href="/dahboard" color="inherit">Manage jobs</Button>
+          <Button href="/jobs/dashboard" color="inherit">Manage jobs</Button>
           <Button href="/jobs/new" color="inherit">Post new job</Button>
           <Button onClick={handleLogOut} color="inherit">Logout</Button>
         </Toolbar>

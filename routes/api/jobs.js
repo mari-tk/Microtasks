@@ -7,7 +7,7 @@ router.get('/', jobsCtrl.getAllJobs);
 
 //finished job
 // router.post('/my', jobsCtrl.createJob);
-
+router.get('/dashboard', jobsCtrl.showDashboard);
 // router.get('/new', jobsCtrl.newJob);
 router.post('/new', jobsCtrl.createJob);
 
