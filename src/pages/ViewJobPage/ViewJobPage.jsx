@@ -78,7 +78,7 @@ export default function ViewJobPage({user}) {
   }
 
   return (
-    <div>ViewJobPage
+    <div>
       <Box
         sx={{
           border: '2px',

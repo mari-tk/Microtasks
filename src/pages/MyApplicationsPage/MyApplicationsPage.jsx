@@ -10,7 +10,6 @@ export default function MyApplicationsPage({user}) {
     async function getMyApplications() {
       try{
       const allApplications = await applicationsAPI.getMyApplications(user._id);
-      console.log(allApplications);
       setApplications(allApplications);
       } catch (e) { 
         setViewError(e.message)
