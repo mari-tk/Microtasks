@@ -27,9 +27,9 @@ export function applyForJob(application) {
   return sendRequest(`${BASE_URL}/${application.jobId}/apply`, 'POST', application);
 }
 
-// export function getJobApplications(id) {
-//   return sendRequest(`${BASE_URL}/${id}/applications`, 'GET');
-// }
+export function getJobApplications(id) {
+  return sendRequest(`${BASE_URL}/${id}/applications`, 'GET');
+}
 
 // export function getJobApplications(id) {
 //   return sendRequest(`${BASE_URL}/${id}`, 'GET');

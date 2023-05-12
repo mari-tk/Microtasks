@@ -5,10 +5,13 @@ const jobsCtrl = require('../../controllers/api/jobs');
 // POST /api/jobs
 router.get('/', jobsCtrl.getAllJobs);
 
+//finished job
+// router.post('/my', jobsCtrl.createJob);
+
 // router.get('/new', jobsCtrl.newJob);
 router.post('/new', jobsCtrl.createJob);
 
-// router.get('/:id/applications', jobsCtrl.getJobApplications);
+router.get('/:id/applications', jobsCtrl.getJobApplications);
 router.get('/:id/edit', jobsCtrl.editJob);
 router.get('/:id', jobsCtrl.showJob);
 router.delete('/:id', jobsCtrl.deleteJob);
