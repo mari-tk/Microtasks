@@ -5,6 +5,9 @@ const jobsCtrl = require('../../controllers/api/jobs');
 // POST /api/jobs
 router.get('/', jobsCtrl.getAllJobs);
 
+//finished job
+// router.post('/my', jobsCtrl.createJob);
+
 // router.get('/new', jobsCtrl.newJob);
 router.post('/new', jobsCtrl.createJob);
 

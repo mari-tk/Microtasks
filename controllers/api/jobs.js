@@ -29,7 +29,6 @@ async function createJob(req, res) {
 async function getAllJobs(req, res) {
   try {
     const jobs = await Job.find({}).sort({createdAt:-1}).populate([{ path: 'userId' }]);
-    // await jobs.populate('userId');
     res.json(jobs);
   } catch (error) {
     res.status(400).json(error);
@@ -81,10 +80,8 @@ async function applyForJob(req, res) {
 async function getJobApplications(req, res) {
   try {
     const applications = await JobApplication.find({jobId: req.params.id}).sort({createdAt:-1}).populate('userId');
-    // await applications.populate('userId');
-    console.log(applications);
     res.json(applications);
   } catch (error) {
-    res.json({});
+    res.status(400).json(error)
   }
 }
