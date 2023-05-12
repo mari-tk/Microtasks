@@ -35,3 +35,8 @@ export function hireApplicant(applicationId, jobId) {
   console.log(jobId);
   return sendRequest(`${BASE_URL}/${jobId}/hire`, 'PUT', {id: applicationId});
 }
+
+export function endJob(jobId) {
+  console.log(jobId);
+  return sendRequest(`${BASE_URL}/${jobId}/end`, 'PUT');
+}

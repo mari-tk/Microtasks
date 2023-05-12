@@ -10,7 +10,8 @@ module.exports = {
   applyForJob,
   getJobApplications,
   hire,
-  showDashboard
+  showDashboard,
+  endJob
   // newJob
 }
 
@@ -106,5 +107,15 @@ async function showDashboard(req, res) {
     res.json(applications);
   } catch (error) {
     res.status(400).json(error);
+  }
+}
+
+async function endJob(req, res) {
+  try {
+    const job =  await Job.findOneAndUpdate({ _id: req.params.id }, {state: 'inactive'}, { new: true });
+    await job.populate('userId');
+    res.json(job)
+  } catch (error) {
+    res.status(400).json(error)
   }
 }

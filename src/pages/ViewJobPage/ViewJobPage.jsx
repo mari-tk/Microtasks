@@ -48,7 +48,6 @@ export default function ViewJobPage({user}) {
 }, []);
 
   async function handleDelete(evt) {
-    // Prevent form from being submitted to the server
     try {
       await jobsAPI.deleteJob(id);
       navigate('/jobs')
@@ -58,8 +57,7 @@ export default function ViewJobPage({user}) {
     }
   }
 
-  async function handleHiring(applicationId) {
-    // Prevent form from being submitted to the server
+  async function handleHire(applicationId) {
     try {
       await jobsAPI.hireApplicant(applicationId, id);
       navigate('/jobs/' + id)
@@ -104,7 +102,7 @@ export default function ViewJobPage({user}) {
                 {jobApplications.map((application, idx)=>                 
                   <ListItem key = {idx}
                     secondaryAction={
-                      <IconButton onClick={() => handleHiring(application._id)} edge="end" aria-label="check">
+                      <IconButton onClick={() => handleHire(application._id)} edge="end" aria-label="check">
                         <CheckCircleOutline />
                       </IconButton>
                     }
