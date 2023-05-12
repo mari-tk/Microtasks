@@ -19,6 +19,7 @@ export default function ViewJobPage({user}) {
   const [job, setJob] = useState();
   const [error, setError] = useState('');
   const [viewError, setViewError] = useState('');
+  // refactor id to jobId
   const { id } = useParams();
   const [jobApplications, setJobApplications] = useState();
   
@@ -57,11 +58,11 @@ export default function ViewJobPage({user}) {
     }
   }
 
-  async function handleHiring(id) {
+  async function handleHiring(applicationId) {
     // Prevent form from being submitted to the server
     try {
-      await jobsAPI.hireApplicant(id);
-      navigate('/jobs')
+      await jobsAPI.hireApplicant(applicationId, id);
+      navigate('/jobs/' + id)
     } catch (e) {
       console.error(e);
       setError('Job was not deleted - Try Again');
@@ -102,7 +103,7 @@ export default function ViewJobPage({user}) {
                 {jobApplications.map((application, idx)=>                 
                   <ListItem key = {idx}
                     secondaryAction={
-                      <IconButton onClick={handleHiring(application._id)} edge="end" aria-label="check">
+                      <IconButton onClick={() => handleHiring(application._id)} edge="end" aria-label="check">
                         <CheckCircleOutline />
                       </IconButton>
                     }
