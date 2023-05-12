@@ -2,7 +2,7 @@ import React from 'react'
 import Box from '@mui/material/Box';
 import { Button } from '@mui/base';
 
-export default function Job({job}) {
+export default function Job({user, job}) {
   return (
     <Box 
       sx={{

@@ -31,6 +31,12 @@ export function getJobApplications(id) {
   return sendRequest(`${BASE_URL}/${id}/applications`, 'GET');
 }
 
-// export function getJobApplications(id) {
-//   return sendRequest(`${BASE_URL}/${id}`, 'GET');
-// }
+export function hireApplicant(applicationId, jobId) {
+  console.log(jobId);
+  return sendRequest(`${BASE_URL}/${jobId}/hire`, 'PUT', {id: applicationId});
+}
+
+export function endJob(jobId) {
+  console.log(jobId);
+  return sendRequest(`${BASE_URL}/${jobId}/end`, 'PUT');
+}

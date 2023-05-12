@@ -8,7 +8,10 @@ module.exports = {
   deleteJob,
   editJob,
   applyForJob,
-  getJobApplications
+  getJobApplications,
+  hire,
+  showDashboard,
+  endJob
   // newJob
 }
 
@@ -81,6 +84,37 @@ async function getJobApplications(req, res) {
   try {
     const applications = await JobApplication.find({jobId: req.params.id}).sort({createdAt:-1}).populate('userId');
     res.json(applications);
+  } catch (error) {
+    res.status(400).json(error)
+  }
+}
+
+async function hire(req, res) {
+  try {
+    console.log(req.body);
+    const job =  await Job.findOneAndUpdate({ _id: req.params.id }, {state: 'in progress', chosenApplicationId: req.body.id}, { new: true });
+    await job.populate('userId');
+    res.json(job)
+  } catch (error) {
+    res.status(400).json(error)
+  }
+}
+
+async function showDashboard(req, res) {
+  try {
+    console.log(req.params.id);
+    const applications = await Job.find({userId: req.params.id}).sort({createdAt:-1}).populate('jobId').populate('userId');
+    res.json(applications);
+  } catch (error) {
+    res.status(400).json(error);
+  }
+}
+
+async function endJob(req, res) {
+  try {
+    const job =  await Job.findOneAndUpdate({ _id: req.params.id }, {state: 'inactive'}, { new: true });
+    await job.populate('userId');
+    res.json(job)
   } catch (error) {
     res.status(400).json(error)
   }

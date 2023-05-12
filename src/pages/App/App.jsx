@@ -11,6 +11,7 @@ import NewJobPage from '../NewJobPage/NewJobPage';
 import ViewJobPage from '../ViewJobPage/ViewJobPage';
 import EditJobPage from '../EditJobPage/EditJobPage';
 import MyApplicationsPage from '../MyApplicationsPage/MyApplicationsPage';
+import MyDashboardPage from '../MyDashboardPage/MyDashboardPage'
 
 export default function App() {
 
@@ -49,6 +50,7 @@ export default function App() {
             <Route path="/jobs/new" element={<NewJobPage user={user} setJobs={setJobs}/>} />
             <Route path="/jobs" element={<JobsPage user={user} jobs={jobs}/>}/>
             <Route path="/applications" element={<MyApplicationsPage user={user}/>} /> 
+            <Route path="/jobs/dashboard" element={<MyDashboardPage user={user} jobs={jobs}/>} /> 
             <Route path="/" element={<Navigate to="/jobs" />} />
           </Routes>
         </> 

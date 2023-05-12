@@ -2,7 +2,6 @@ import React from 'react'
 import { useState, useEffect} from 'react';
 import { useParams } from 'react-router-dom';
 import * as jobsAPI from '../../utilities/jobs-api'
-import { styled } from '@mui/material/styles';
 import { Box } from '@mui/system';
 import { Button } from '@mui/base';
 import Grid from '@mui/material/Grid';
@@ -20,6 +19,7 @@ export default function ViewJobPage({user}) {
   const [job, setJob] = useState();
   const [error, setError] = useState('');
   const [viewError, setViewError] = useState('');
+  // refactor id to jobId
   const { id } = useParams();
   const [jobApplications, setJobApplications] = useState();
   
@@ -48,10 +48,19 @@ export default function ViewJobPage({user}) {
 }, []);
 
   async function handleDelete(evt) {
-    // Prevent form from being submitted to the server
     try {
       await jobsAPI.deleteJob(id);
       navigate('/jobs')
+    } catch (e) {
+      console.error(e);
+      setError('Job was not deleted - Try Again');
+    }
+  }
+
+  async function handleHire(applicationId) {
+    try {
+      await jobsAPI.hireApplicant(applicationId, id);
+      navigate('/jobs/' + id)
     } catch (e) {
       console.error(e);
       setError('Job was not deleted - Try Again');
@@ -67,7 +76,7 @@ export default function ViewJobPage({user}) {
   }
 
   return (
-    <div>ViewJobPage
+    <div>
       <Box
         sx={{
           border: '2px',
@@ -78,6 +87,7 @@ export default function ViewJobPage({user}) {
         <div>Job {job.name} by {job.userId.name}</div>
         <div>Description {job.description}</div>
         <div>Created {job.createdAt}</div>
+        <div>Status {job.state}</div>
         <Button href={`/jobs/${job._id}/edit`}>Edit job</Button>
         <Button onClick={handleDelete}>Delete job</Button>
         <p className="error-message">&nbsp;{error}</p>
@@ -92,7 +102,7 @@ export default function ViewJobPage({user}) {
                 {jobApplications.map((application, idx)=>                 
                   <ListItem key = {idx}
                     secondaryAction={
-                      <IconButton edge="end" aria-label="check">
+                      <IconButton onClick={() => handleHire(application._id)} edge="end" aria-label="check">
                         <CheckCircleOutline />
                       </IconButton>
                     }
