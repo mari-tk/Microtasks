@@ -88,10 +88,9 @@ async function getJobApplications(req, res) {
 }
 
 async function hire(req, res) {
-  // console.log(req);
   try {
     console.log(req.body);
-    const job =  await Job.findOneAndUpdate({ _id: req.params.id }, {state: 'active', chosenApplicationId: req.body.id}, { new: true });
+    const job =  await Job.findOneAndUpdate({ _id: req.params.id }, {state: 'in progress', chosenApplicationId: req.body.id}, { new: true });
     await job.populate('userId');
     res.json(job)
   } catch (error) {

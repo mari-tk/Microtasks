@@ -89,6 +89,7 @@ export default function ViewJobPage({user}) {
         <div>Job {job.name} by {job.userId.name}</div>
         <div>Description {job.description}</div>
         <div>Created {job.createdAt}</div>
+        <div>Status {job.state}</div>
         <Button href={`/jobs/${job._id}/edit`}>Edit job</Button>
         <Button onClick={handleDelete}>Delete job</Button>
         <p className="error-message">&nbsp;{error}</p>
