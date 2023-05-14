@@ -3,6 +3,6 @@
 import sendRequest from './send-request';
 const BASE_URL = '/api/applications';
 
-export function getMyApplications(id) {
-  return sendRequest(`${BASE_URL}/${id}`, 'GET');
+export function getMyApplications() {
+  return sendRequest(BASE_URL, 'GET');
 }

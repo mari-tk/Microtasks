@@ -9,9 +9,7 @@ export default function MyApplicationsPage({ user }) {
   useEffect(function () {
     async function getMyApplications() {
       try {
-        const allApplications = await applicationsAPI.getMyApplications(
-          user._id
-        );
+        const allApplications = await applicationsAPI.getMyApplications();
         setApplications(allApplications);
       } catch (e) {
         setViewError(e.message);
