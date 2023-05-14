@@ -10,7 +10,7 @@ router.post('/new', jobsCtrl.createJob);
 
 router.get(
   '/:id/applications',
-  jobsCtrl.ensureJobAuthor,
+  jobsCtrl.ensureJobAuthor(),
   jobsCtrl.getJobApplications
 );
 router.get('/:id', jobsCtrl.showJob);
