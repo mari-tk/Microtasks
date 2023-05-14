@@ -1,22 +1,25 @@
-import React from 'react'
+import React from 'react';
 
-export default function Application({application}) {
+export default function Application({ application }) {
   return (
     <div>
-      {application._id === application.jobId.chosenApplicationId ?
-        <div> <br />
+      {application._id === application.jobId.chosenApplicationId ? (
+        <div>
+          {' '}
+          <br />
           Active job(s):
           <div>Application for: {application.jobId.name}</div>
           <div>Cover letter: {application.letter}</div>
         </div>
-        :
-        <div> <br />
+      ) : (
+        <div>
+          {' '}
+          <br />
           My applications
-        <div>Application for: {application.jobId.name}</div>
-        <div>Cover letter: {application.letter}</div>
-      </div>
-      }
-
+          <div>Application for: {application.jobId.name}</div>
+          <div>Cover letter: {application.letter}</div>
+        </div>
+      )}
     </div>
-  )
+  );
 }

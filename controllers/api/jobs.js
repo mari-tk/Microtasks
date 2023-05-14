@@ -1,5 +1,5 @@
-const Job = require('../../models/job')
-const JobApplication = require('../../models/jobApplication')
+const Job = require('../../models/job');
+const JobApplication = require('../../models/jobApplication');
 
 module.exports = {
   createJob,
@@ -11,27 +11,29 @@ module.exports = {
   getJobApplications,
   hire,
   showDashboard,
-  endJob
+  endJob,
   // newJob
-}
+};
 
 async function createJob(req, res) {
   try {
     const job = await Job.create({
       userId: req.user._id,
       name: req.body.name,
-      description: req.body.description
-    })
+      description: req.body.description,
+    });
     await job.populate('userId');
-    res.json(job)
+    res.json(job);
   } catch (error) {
-    res.status(400).json(error)
+    res.status(400).json(error);
   }
 }
 
 async function getAllJobs(req, res) {
   try {
-    const jobs = await Job.find({}).sort({createdAt:-1}).populate([{ path: 'userId' }]);
+    const jobs = await Job.find({})
+      .sort({ createdAt: -1 })
+      .populate([{ path: 'userId' }]);
     res.json(jobs);
   } catch (error) {
     res.status(400).json(error);
@@ -40,16 +42,15 @@ async function getAllJobs(req, res) {
 
 async function showJob(req, res) {
   try {
-  const job = await Job.findById(req.params.id);
-  if (!job){
-    res.status(404).json({message: "Job not found"})
-    return
-  }
-  await job.populate('userId');
-  res.json(job)
-
+    const job = await Job.findById(req.params.id);
+    if (!job) {
+      res.status(404).json({ message: 'Job not found' });
+      return;
+    }
+    await job.populate('userId');
+    res.json(job);
   } catch (error) {
-    res.status(400).json(error)
+    res.status(400).json(error);
   }
 }
 
@@ -61,49 +62,60 @@ async function deleteJob(req, res) {
 async function editJob(req, res) {
   try {
     console.log(req.body);
-    const job =  await Job.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true });
+    const job = await Job.findOneAndUpdate({ _id: req.params.id }, req.body, {
+      new: true,
+    });
 
     await job.populate('userId');
-    res.json(job)
+    res.json(job);
   } catch (error) {
-    res.status(400).json(error)
+    res.status(400).json(error);
   }
 }
 
 async function applyForJob(req, res) {
   try {
-    const jobApplication = await JobApplication.create(req.body)
+    const jobApplication = await JobApplication.create(req.body);
     await jobApplication.populate('userId');
     res.json(jobApplication);
   } catch (error) {
-    res.status(400).json(error)
+    res.status(400).json(error);
   }
 }
 
 async function getJobApplications(req, res) {
   try {
-    const applications = await JobApplication.find({jobId: req.params.id}).sort({createdAt:-1}).populate('userId');
+    const applications = await JobApplication.find({ jobId: req.params.id })
+      .sort({ createdAt: -1 })
+      .populate('userId');
     res.json(applications);
   } catch (error) {
-    res.status(400).json(error)
+    res.status(400).json(error);
   }
 }
 
 async function hire(req, res) {
   try {
     console.log(req.body);
-    const job =  await Job.findOneAndUpdate({ _id: req.params.id }, {state: 'in progress', chosenApplicationId: req.body.id}, { new: true });
+    const job = await Job.findOneAndUpdate(
+      { _id: req.params.id },
+      { state: 'in progress', chosenApplicationId: req.body.id },
+      { new: true }
+    );
     await job.populate('userId');
-    res.json(job)
+    res.json(job);
   } catch (error) {
-    res.status(400).json(error)
+    res.status(400).json(error);
   }
 }
 
 async function showDashboard(req, res) {
   try {
     console.log(req.params.id);
-    const applications = await Job.find({userId: req.params.id}).sort({createdAt:-1}).populate('jobId').populate('userId');
+    const applications = await Job.find({ userId: req.params.id })
+      .sort({ createdAt: -1 })
+      .populate('jobId')
+      .populate('userId');
     res.json(applications);
   } catch (error) {
     res.status(400).json(error);
@@ -112,10 +124,14 @@ async function showDashboard(req, res) {
 
 async function endJob(req, res) {
   try {
-    const job =  await Job.findOneAndUpdate({ _id: req.params.id }, {state: 'inactive'}, { new: true });
+    const job = await Job.findOneAndUpdate(
+      { _id: req.params.id },
+      { state: 'inactive' },
+      { new: true }
+    );
     await job.populate('userId');
-    res.json(job)
+    res.json(job);
   } catch (error) {
-    res.status(400).json(error)
+    res.status(400).json(error);
   }
 }

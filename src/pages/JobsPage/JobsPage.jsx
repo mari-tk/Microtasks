@@ -1,10 +1,10 @@
-import React from 'react'
-import { useState, useEffect } from 'react'
-import Job from '../../components/Job/Job'
+import React from 'react';
+import { useState, useEffect } from 'react';
+import Job from '../../components/Job/Job';
 import Button from '@mui/material/Button';
 import { Container } from '@mui/material';
 
-export default function JobsPage({jobs}) {
+export default function JobsPage({ jobs }) {
   return (
     <Container
       disableGutters
@@ -13,7 +13,9 @@ export default function JobsPage({jobs}) {
         paddingTop: '64px',
       }}
     >
-      {jobs.map((j, idx) => <Job job={j} key={idx}/>)}
+      {jobs.map((j, idx) => (
+        <Job job={j} key={idx} />
+      ))}
     </Container>
-  )
+  );
 }

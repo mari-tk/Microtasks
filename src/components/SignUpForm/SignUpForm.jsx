@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import { signUp } from '../../utilities/users-service';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -6,14 +6,13 @@ import Box from '@mui/material/Box';
 
 //remake class component to functional component
 export default class SignUpForm extends Component {
-
   // state is always an object with a property for each "piece" of state
   state = {
     name: '',
     email: '',
     password: '',
     confirm: '',
-    error: ''
+    error: '',
   };
 
   handleSubmit = async (evt) => {
@@ -21,22 +20,20 @@ export default class SignUpForm extends Component {
     try {
       // We don't want to send the 'error' or 'confirm' property,
       //  so let's make a copy of the state object, then delete them
-      const formData = {...this.state}
+      const formData = { ...this.state };
       delete formData.error;
       delete formData.confirm;
-      const user = await signUp(formData)
-      this.props.setUser(user)
+      const user = await signUp(formData);
+      this.props.setUser(user);
     } catch (e) {
       console.log(e);
-      this.setState({ error: 'Sign Up Failed - Try Again'})
+      this.setState({ error: 'Sign Up Failed - Try Again' });
     }
-  }
+  };
 
   handleChange = (evt) => {
-    this.setState({ [evt.target.name]: evt.target.value, error: '' })
-  }
-
-
+    this.setState({ [evt.target.name]: evt.target.value, error: '' });
+  };
 
   render() {
     const disable = this.state.password !== this.state.confirm;
@@ -58,7 +55,7 @@ export default class SignUpForm extends Component {
               fullWidth
               id="email"
               label="Name"
-              autoComplete='off'
+              autoComplete="off"
               name="name"
               autoFocus
               value={this.state.name}
@@ -70,7 +67,7 @@ export default class SignUpForm extends Component {
               fullWidth
               id="email"
               label="Email Address"
-              autoComplete='off'
+              autoComplete="off"
               name="email"
               autoFocus
               value={this.state.email}
@@ -82,7 +79,7 @@ export default class SignUpForm extends Component {
               fullWidth
               name="password"
               label="Password"
-              autoComplete='off'
+              autoComplete="off"
               type="password"
               id="password"
               value={this.state.password}
@@ -94,7 +91,7 @@ export default class SignUpForm extends Component {
               fullWidth
               name="confirm"
               label="Confirm Password"
-              autoComplete='off'
+              autoComplete="off"
               type="password"
               id="password"
               value={this.state.confirm}
@@ -112,9 +109,8 @@ export default class SignUpForm extends Component {
 
             {/* <p className="error-message">&nbsp;{this.state.error}</p> */}
           </Box>
-      </Box>
+        </Box>
       </>
     );
   }
 }
-

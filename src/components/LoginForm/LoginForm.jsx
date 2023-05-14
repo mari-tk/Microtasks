@@ -8,7 +8,7 @@ import Box from '@mui/material/Box';
 export default function LoginForm({ setUser }) {
   const [credentials, setCredentials] = useState({
     email: '',
-    password: ''
+    password: '',
   });
   const [error, setError] = useState('');
 
@@ -21,7 +21,7 @@ export default function LoginForm({ setUser }) {
     // Prevent form from being submitted to the server
     evt.preventDefault();
     try {
-      // The promise returned by the signUp service method 
+      // The promise returned by the signUp service method
       // will resolve to the user object included in the
       // payload of the JSON Web Token (JWT)
       const user = await usersService.login(credentials);
@@ -51,7 +51,7 @@ export default function LoginForm({ setUser }) {
             id="email"
             label="Email Address"
             name="email"
-            autoComplete='off'
+            autoComplete="off"
             autoFocus
             value={credentials.email}
             onChange={handleChange}
