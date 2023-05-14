@@ -12,7 +12,7 @@ module.exports = {
   hire,
   showDashboard,
   endJob,
-  // newJob
+  ensureJobAuthor,
 };
 
 async function createJob(req, res) {
@@ -61,7 +61,6 @@ async function deleteJob(req, res) {
 
 async function editJob(req, res) {
   try {
-    console.log(req.body);
     const job = await Job.findOneAndUpdate({ _id: req.params.id }, req.body, {
       new: true,
     });
@@ -109,10 +108,11 @@ async function hire(req, res) {
   }
 }
 
+// Show jobs created by currently authorized user
 async function showDashboard(req, res) {
   try {
     console.log(req.params.id);
-    const applications = await Job.find({ userId: req.params.id })
+    const applications = await Job.find({ userId: req.user._id })
       .sort({ createdAt: -1 })
       .populate('jobId')
       .populate('userId');
@@ -134,4 +134,21 @@ async function endJob(req, res) {
   } catch (error) {
     res.status(400).json(error);
   }
+}
+
+function ensureJobAuthor(isAuthor = true) {
+  const op = isAuthor ? '$eq' : '$ne';
+  return async function (req, res, next) {
+    const job = await Job.findOne({
+      _id: req.params.id,
+      userId: { [op]: req.user._id },
+    });
+    if (!job) {
+      res
+        .status(403)
+        .json({ message: 'U do not have acces 4 this resource, Get out' });
+      return;
+    }
+    next();
+  };
 }

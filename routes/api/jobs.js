@@ -5,21 +5,25 @@ const jobsCtrl = require('../../controllers/api/jobs');
 // POST /api/jobs
 router.get('/', jobsCtrl.getAllJobs);
 
-//finished job
-// router.post('/my', jobsCtrl.createJob);
 router.get('/dashboard', jobsCtrl.showDashboard);
-// router.get('/new', jobsCtrl.newJob);
 router.post('/new', jobsCtrl.createJob);
 
-router.get('/:id/applications', jobsCtrl.getJobApplications);
-router.get('/:id/edit', jobsCtrl.editJob);
+router.get(
+  '/:id/applications',
+  jobsCtrl.ensureJobAuthor,
+  jobsCtrl.getJobApplications
+);
 router.get('/:id', jobsCtrl.showJob);
-router.delete('/:id', jobsCtrl.deleteJob);
-router.put('/:id/hire', jobsCtrl.hire);
-router.put('/:id/end', jobsCtrl.endJob);
-router.put('/:id', jobsCtrl.editJob);
+router.delete('/:id', jobsCtrl.ensureJobAuthor(), jobsCtrl.deleteJob);
+router.put('/:id/hire', jobsCtrl.ensureJobAuthor(), jobsCtrl.hire);
+router.put('/:id/end', jobsCtrl.ensureJobAuthor(), jobsCtrl.endJob);
+router.put('/:id', jobsCtrl.ensureJobAuthor(), jobsCtrl.editJob);
 
 //job applications
-router.post('/:id/apply', jobsCtrl.applyForJob);
+router.post(
+  '/:id/apply',
+  jobsCtrl.ensureJobAuthor(false),
+  jobsCtrl.applyForJob
+);
 
 module.exports = router;
