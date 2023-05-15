@@ -35,10 +35,7 @@ export default function App() {
           <Routes>
             <Route path="/jobs/:id/edit" element={<EditJobPage />} />
             <Route path="/jobs/:id" element={<ViewJobPage user={user} />} />
-            <Route
-              path="/jobs/new"
-              element={<NewJobPage user={user} setJobs={setJobs} />}
-            />
+            <Route path="/jobs/new" element={<NewJobPage user={user} />} />
             <Route path="/jobs" element={<JobsPage user={user} />} />
             <Route
               path="/applications"

@@ -5,7 +5,7 @@ import * as jobsAPI from '../../utilities/jobs-api';
 import Button from '@mui/material/Button';
 import { Container } from '@mui/material';
 
-export default function JobsPage() {
+export default function JobsPage({ user }) {
   const [jobs, setJobs] = useState([]);
 
   useEffect(function () {
@@ -18,14 +18,14 @@ export default function JobsPage() {
 
   return (
     <Container
-      disableGutters
+      // disableGutters
       sx={{
         maxHeight: 'calc(100vh - 64px)',
         paddingTop: '64px',
       }}
     >
       {jobs.map((j, idx) => (
-        <Job job={j} key={idx} />
+        <Job user={user} job={j} key={idx} />
       ))}
     </Container>
   );
