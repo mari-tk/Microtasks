@@ -61,26 +61,32 @@ export default function MyDashboardPage({ user }) {
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableBody>
-            {jobs.map((job) => (
-              <TableRow key={job.name}>
-                <TableCell component="th" scope="row">
-                  <Button href={`/jobs/${job._id}`}>
-                    <Typography variant="h6">{job.name}</Typography>
-                  </Button>
-                </TableCell>
-                <TableCell align="right">
-                  <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    sx={{ mt: 3, mb: 2 }}
-                    onClick={() => handleEndJob(job._id)}
-                  >
-                    End Job
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
+            {jobs.length ? (
+              <>
+                {jobs.map((job) => (
+                  <TableRow key={job.name}>
+                    <TableCell component="th" scope="row">
+                      <Button href={`/jobs/${job._id}`}>
+                        <Typography variant="h6">{job.name}</Typography>
+                      </Button>
+                    </TableCell>
+                    <TableCell align="right">
+                      <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        sx={{ mt: 3, mb: 2 }}
+                        onClick={() => handleEndJob(job._id)}
+                      >
+                        End Job
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </>
+            ) : (
+              'No jobs ... yet'
+            )}
           </TableBody>
         </Table>
       </TableContainer>
