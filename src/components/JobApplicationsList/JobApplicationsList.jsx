@@ -38,7 +38,6 @@ export default function JobApplicationList({
 
   return (
     <div>
-      JobApplicationList
       <Grid item xs={12} md={6}>
         <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
           Job applications

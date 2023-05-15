@@ -1,11 +1,25 @@
 import React from 'react';
+import moment from 'moment';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import * as jobsAPI from '../../utilities/jobs-api';
 import { Box } from '@mui/system';
 import { Button } from '@mui/base';
 import { useNavigate } from 'react-router-dom';
-import { Alert, CircularProgress, Snackbar } from '@mui/material';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import EditIcon from '@mui/icons-material/Edit';
+import CircleIcon from '@mui/icons-material/Circle';
+
+import {
+  Alert,
+  CircularProgress,
+  Grid,
+  IconButton,
+  Paper,
+  Snackbar,
+  Toolbar,
+  Typography,
+} from '@mui/material';
 import JobApplicationForm from '../../components/JobApplicationForm/JobApplicationForm';
 import JobApplicationList from '../../components/JobApplicationsList/JobApplicationsList';
 
@@ -65,24 +79,77 @@ export default function ViewJobPage({ user }) {
     return <CircularProgress />;
   }
 
+  let stateText, stateColor;
+
+  if (job.state === 'active') {
+    stateColor = 'green';
+    stateText = 'Active';
+  } else if (job.state === 'inProgress') {
+    stateColor = 'yellow';
+    stateText = 'In Progress';
+  } else {
+    stateColor = 'grey';
+    stateText = 'Inactive';
+  }
+
   return (
     <div>
-      <Box
+      <Paper
         sx={{
-          border: '2px',
+          mb: '30px',
           width: 600,
-          backgroundColor: 'primary.light',
         }}
+        elevation={3}
       >
-        <div>
-          Job {job.name} by {job.userId.name}
-        </div>
-        <div>Description {job.description}</div>
-        <div>Created {job.createdAt}</div>
-        <div>Status {job.state}</div>
-        <Button href={`/jobs/${job._id}/edit`}>Edit job</Button>
-        <Button onClick={handleDelete}>Delete job</Button>
-      </Box>
+        <Toolbar
+          disableGutters
+          sx={{
+            backgroundColor: 'rgb(241,247,254)',
+          }}
+        >
+          <Grid container alignItems="left">
+            <Grid item xs={2}>
+              <Typography variant="h7">
+                <CircleIcon fontSize="small" sx={{ color: stateColor }} />
+                {stateText}
+              </Typography>
+            </Grid>
+            <Grid item xs={8}>
+              <Typography variant="h5">{job.name}</Typography>
+            </Grid>
+            <Grid item xs={2}>
+              <IconButton href={`/jobs/${job._id}/edit`}>
+                <EditIcon />
+              </IconButton>
+              <IconButton onClick={handleDelete}>
+                <DeleteForeverIcon />
+              </IconButton>
+            </Grid>
+          </Grid>
+        </Toolbar>
+        <Box
+          sx={{
+            margin: '20px',
+            textAlign: 'left',
+          }}
+        >
+          {job.description}
+        </Box>
+        <Box
+          sx={{
+            backgroundColor: 'rgb(245,245,245)',
+          }}
+        >
+          <Grid container alignItems="left">
+            <Grid item xs>
+              <Typography>
+                {job.userId.name} posted&nbsp;
+                {moment(job.createdAt).fromNow()}
+              </Typography>
+            </Grid>
+          </Grid>
+        </Box>
+      </Paper>
       <JobApplicationList jobApplicationsState={jobApplicationsState} />
       {jobApplicationsState === 'notAuthor' ? (
         <JobApplicationForm user={user} job={job} />

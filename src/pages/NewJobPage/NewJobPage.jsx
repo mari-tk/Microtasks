@@ -6,7 +6,7 @@ import Box from '@mui/material/Box';
 import * as jobsAPI from '../../utilities/jobs-api';
 import { useNavigate } from 'react-router-dom';
 
-export default function NewJobPage({ setJobs }) {
+export default function NewJobPage() {
   const navigate = useNavigate();
 
   const [job, setJob] = useState({
@@ -25,8 +25,7 @@ export default function NewJobPage({ setJobs }) {
     // Prevent form from being submitted to the server
     evt.preventDefault();
     try {
-      const newJob = await jobsAPI.createJob(job);
-      setJobs((jobs) => [...jobs, newJob]);
+      await jobsAPI.createJob(job);
       navigate('/jobs');
     } catch (e) {
       console.error(e);
