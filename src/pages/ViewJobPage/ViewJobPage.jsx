@@ -4,21 +4,10 @@ import { useParams } from 'react-router-dom';
 import * as jobsAPI from '../../utilities/jobs-api';
 import { Box } from '@mui/system';
 import { Button } from '@mui/base';
-import Grid from '@mui/material/Grid';
 import { useNavigate } from 'react-router-dom';
-import List from '@mui/material/List';
-import Typography from '@mui/material/Typography';
-import {
-  Avatar,
-  CircularProgress,
-  IconButton,
-  ListItem,
-  ListItemAvatar,
-} from '@mui/material';
-import DescriptionIcon from '@mui/icons-material/Description';
-import ListItemText from '@mui/material/ListItemText';
+import { Alert, CircularProgress, Snackbar } from '@mui/material';
 import JobApplicationForm from '../../components/JobApplicationForm/JobApplicationForm';
-import { CheckCircleOutline } from '@mui/icons-material';
+import JobApplicationList from '../../components/JobApplicationsList/JobApplicationsList';
 
 export default function ViewJobPage({ user }) {
   const navigate = useNavigate();
@@ -28,29 +17,30 @@ export default function ViewJobPage({ user }) {
   // refactor id to jobId
   const { id } = useParams();
   const [jobApplications, setJobApplications] = useState();
+  const [jobApplicationsState, setJobApplicationsState] = useState('loading');
 
   useEffect(function () {
     async function getJob() {
       try {
         const thisJob = await jobsAPI.getJob(id);
         setJob(thisJob);
+        if (thisJob.userId._id === user._id) {
+          setJobApplicationsState('loading');
+          try {
+            const allJobApplications = await jobsAPI.getJobApplications(id);
+            setJobApplications(allJobApplications);
+          } catch (e) {
+            setError(e.message);
+          }
+          setJobApplicationsState('done');
+        } else {
+          setJobApplicationsState('notAuthor');
+        }
       } catch (e) {
         setViewError(e.message);
       }
     }
     getJob();
-  }, []);
-
-  useEffect(function () {
-    async function getJobApplications() {
-      try {
-        const allJobApplications = await jobsAPI.getJobApplications(id);
-        setJobApplications(allJobApplications);
-      } catch (e) {
-        setViewError(e.message);
-      }
-    }
-    getJobApplications();
   }, []);
 
   async function handleDelete(evt) {
@@ -63,14 +53,8 @@ export default function ViewJobPage({ user }) {
     }
   }
 
-  async function handleHire(applicationId) {
-    try {
-      await jobsAPI.hireApplicant(applicationId, id);
-      navigate('/jobs/' + id);
-    } catch (e) {
-      console.error(e);
-      setError('Job was not deleted - Try Again');
-    }
+  function handleErrorClose() {
+    setError('');
   }
 
   if (viewError) {
@@ -98,48 +82,18 @@ export default function ViewJobPage({ user }) {
         <div>Status {job.state}</div>
         <Button href={`/jobs/${job._id}/edit`}>Edit job</Button>
         <Button onClick={handleDelete}>Delete job</Button>
-        <p className="error-message">&nbsp;{error}</p>
       </Box>
-      <Grid item xs={12} md={6}>
-        <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
-          Job applications
-        </Typography>
-        {jobApplications ? (
-          <Box>
-            <List>
-              {jobApplications.map((application, idx) => (
-                <ListItem
-                  key={idx}
-                  secondaryAction={
-                    <IconButton
-                      onClick={() => handleHire(application._id)}
-                      edge="end"
-                      aria-label="check"
-                    >
-                      <CheckCircleOutline />
-                    </IconButton>
-                  }
-                >
-                  <ListItemAvatar>
-                    <Avatar>
-                      <DescriptionIcon />
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={application.userId.name}
-                    secondary={application.letter}
-                  />
-                </ListItem>
-              ))}
-            </List>
-          </Box>
-        ) : (
-          <div>No applications ... yet</div>
-        )}
-      </Grid>
-      <div>
+      <JobApplicationList jobApplicationsState={jobApplicationsState} />
+      {jobApplicationsState === 'notAuthor' ? (
         <JobApplicationForm user={user} job={job} />
-      </div>
+      ) : (
+        <></>
+      )}
+      <Snackbar open={!!error}>
+        <Alert severity="error" onClose={handleErrorClose}>
+          {error}
+        </Alert>
+      </Snackbar>
     </div>
   );
 }
