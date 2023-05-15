@@ -49,9 +49,15 @@ export default function MyApplicationsPage({ user }) {
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableBody>
-            {applications.map((a, idx) => (
-              <Application application={a} key={idx} />
-            ))}
+            {applications.length ? (
+              <>
+                {applications.map((a, idx) => (
+                  <Application application={a} key={idx} />
+                ))}
+              </>
+            ) : (
+              'No applications ... yet'
+            )}
           </TableBody>
         </Table>
       </TableContainer>

@@ -41,19 +41,25 @@ export default class SignUpForm extends Component {
       <>
         <Box
           sx={{
-            my: 8,
-            mx: 4,
+            // my: 8,
+            // mx: 4,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
+            maxWidth: 'md',
           }}
         >
-          <Box component="form" autoComplete="off" onSubmit={this.handleSubmit}>
+          <Box
+            component="form"
+            autoComplete="off"
+            onSubmit={this.handleSubmit}
+            sx={{ maxWidth: 'md' }}
+          >
             <TextField
               margin="normal"
               required
               fullWidth
-              id="email"
+              id="name"
               label="Name"
               autoComplete="off"
               name="name"
@@ -69,7 +75,6 @@ export default class SignUpForm extends Component {
               label="Email Address"
               autoComplete="off"
               name="email"
-              autoFocus
               value={this.state.email}
               onChange={this.handleChange}
             />

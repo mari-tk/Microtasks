@@ -8,6 +8,8 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import HomeIcon from '@mui/icons-material/Home';
+import Image from 'mui-image';
+import logo from '../../assets/microtasks.png';
 
 export default function NavBar({ user, updateUser }) {
   function handleLogOut() {
@@ -27,10 +29,12 @@ export default function NavBar({ user, updateUser }) {
             sx={{ mr: 2 }}
             href="/jobs"
           >
-            <HomeIcon />
+            {/* <HomeIcon /> */}
+            <Image src={logo} width="300px" />
           </IconButton>
+          {/* <Image src={logo} width="300px" /> */}
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Welcome to Microtasks, {user.name}
+            Welcome, {user.name}
           </Typography>
           <Button href="/applications" color="inherit">
             Applied jobs
