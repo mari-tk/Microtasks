@@ -1,7 +1,15 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import * as jobsAPI from '../../utilities/jobs-api';
-import { Box, Button, TextField } from '@mui/material';
+import {
+  Box,
+  Button,
+  Grid,
+  Paper,
+  TextField,
+  Toolbar,
+  Typography,
+} from '@mui/material';
 
 export default function JobApplicationForm({ user, job }) {
   const [application, setApplication] = useState({ letter: '' });
@@ -23,24 +31,38 @@ export default function JobApplicationForm({ user, job }) {
   }
 
   return (
-    <div>
-      Please enter your cover letter:
-      <Box component="form" noValidate onSubmit={handleSubmit}>
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          name="letter"
-          label="write something..."
-          type="text"
-          value={application.letter}
-          onChange={handleChange}
-        />
-        <Button variant="contained" type="submit">
-          Apply for this job
-        </Button>
-      </Box>
-      <p className="error-message">&nbsp;{error}</p>
-    </div>
+    <Paper>
+      <Grid item xs={12} md={6}>
+        <Toolbar
+          disableGutters
+          sx={{
+            backgroundColor: 'rgb(241,247,254)',
+          }}
+        >
+          <Grid container alignItems="left">
+            <Grid item xs>
+              <Typography variant="h5">Apply for a job</Typography>
+            </Grid>
+          </Grid>
+        </Toolbar>
+        Please enter your cover letter:
+        <Box component="form" noValidate onSubmit={handleSubmit}>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="letter"
+            label="write something..."
+            type="text"
+            value={application.letter}
+            onChange={handleChange}
+          />
+          <Button variant="contained" type="submit">
+            Apply for this job
+          </Button>
+        </Box>
+        <p className="error-message">&nbsp;{error}</p>
+      </Grid>
+    </Paper>
   );
 }

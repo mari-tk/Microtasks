@@ -150,7 +150,10 @@ export default function ViewJobPage({ user }) {
           </Grid>
         </Box>
       </Paper>
-      <JobApplicationList jobApplicationsState={jobApplicationsState} />
+      <JobApplicationList
+        jobApplications={jobApplications}
+        jobApplicationsState={jobApplicationsState}
+      />
       {jobApplicationsState === 'notAuthor' ? (
         <JobApplicationForm user={user} job={job} />
       ) : (

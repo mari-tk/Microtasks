@@ -9,6 +9,8 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
+  Paper,
+  Toolbar,
   Typography,
 } from '@mui/material';
 import DescriptionIcon from '@mui/icons-material/Description';
@@ -37,11 +39,20 @@ export default function JobApplicationList({
   }
 
   return (
-    <div>
+    <Paper>
       <Grid item xs={12} md={6}>
-        <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
-          Job applications
-        </Typography>
+        <Toolbar
+          disableGutters
+          sx={{
+            backgroundColor: 'rgb(241,247,254)',
+          }}
+        >
+          <Grid container alignItems="left">
+            <Grid item xs>
+              <Typography variant="h5">Job applications</Typography>
+            </Grid>
+          </Grid>
+        </Toolbar>
         {jobApplications ? (
           <Box>
             <List>
@@ -75,6 +86,6 @@ export default function JobApplicationList({
           <div>No applications ... yet</div>
         )}
       </Grid>
-    </div>
+    </Paper>
   );
 }
