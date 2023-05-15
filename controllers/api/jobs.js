@@ -114,7 +114,6 @@ async function showDashboard(req, res) {
     console.log(req.params.id);
     const applications = await Job.find({ userId: req.user._id })
       .sort({ createdAt: -1 })
-      .populate('jobId')
       .populate('userId');
     res.json(applications);
   } catch (error) {

@@ -1,11 +1,21 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container } from '@mui/material';
 import Button from '@mui/material/Button';
 import * as jobsAPI from '../../utilities/jobs-api';
 import { useNavigate } from 'react-router-dom';
 
-export default function MyDashboardPage({ user, jobs }) {
+export default function MyDashboardPage({ user }) {
   const navigate = useNavigate();
+
+  const [jobs, setJobs] = useState([]);
+
+  useEffect(function () {
+    async function getJobs() {
+      const jobs = await jobsAPI.getDashboard();
+      setJobs(jobs);
+    }
+    getJobs();
+  }, []);
 
   async function handleEndJob(jobId) {
     // Prevent form from being submitted to the server
