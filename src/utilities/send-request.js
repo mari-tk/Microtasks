@@ -20,5 +20,11 @@ export default async function sendRequest(url, method = 'GET', payload = null) {
     return res.json();
   }
 
-  throw new Error(res.statusText);
+  let errorMessage = res.statusText;
+  try {
+    const errorData = await res.json();
+    errorMessage = errorData.message;
+  } catch (e) {}
+
+  throw new Error(errorMessage);
 }

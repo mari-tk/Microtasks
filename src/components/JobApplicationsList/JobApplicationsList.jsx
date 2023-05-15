@@ -1,5 +1,6 @@
 import { CheckCircleOutline } from '@mui/icons-material';
 import {
+  Alert,
   Avatar,
   Box,
   CircularProgress,
@@ -9,40 +10,44 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
+  Paper,
+  Snackbar,
+  Toolbar,
   Typography,
 } from '@mui/material';
 import DescriptionIcon from '@mui/icons-material/Description';
-import React from 'react';
+import React, { useState } from 'react';
+import * as jobsAPI from '../../utilities/jobs-api';
 
-export default function JobApplicationList({
-  jobApplicationsState,
-  jobApplications,
-}) {
-  if (jobApplicationsState === 'loading') {
-    return <CircularProgress />;
-  }
+export default function JobApplicationList({ isOwnJob, job, jobApplications }) {
+  const [error, setError] = useState('');
 
-  if (jobApplicationsState != 'done') {
-    return null;
-  }
-
-  async function handleHire(applicationId) {
+  async function handleHire(applicationId, jobId) {
     try {
-      await jobsAPI.hireApplicant(applicationId, id);
-      navigate('/jobs/' + id);
+      await jobsAPI.hireApplicant(applicationId, jobId);
+      location.reload();
     } catch (e) {
-      console.error(e);
-      setError('Job was not deleted - Try Again');
+      setError(e.message);
     }
   }
 
   return (
-    <div>
-      JobApplicationList
+    <Paper>
       <Grid item xs={12} md={6}>
-        <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
-          Job applications
-        </Typography>
+        <Toolbar
+          disableGutters
+          sx={{
+            backgroundColor: 'rgb(241,247,254)',
+          }}
+        >
+          <Grid container alignItems="left">
+            <Grid item xs>
+              <Typography variant="h5">
+                {isOwnJob ? 'Job applications' : 'My application'}
+              </Typography>
+            </Grid>
+          </Grid>
+        </Toolbar>
         {jobApplications ? (
           <Box>
             <List>
@@ -50,13 +55,19 @@ export default function JobApplicationList({
                 <ListItem
                   key={idx}
                   secondaryAction={
-                    <IconButton
-                      onClick={() => handleHire(application._id)}
-                      edge="end"
-                      aria-label="check"
-                    >
-                      <CheckCircleOutline />
-                    </IconButton>
+                    isOwnJob && job.state === 'active' ? (
+                      <IconButton
+                        onClick={() =>
+                          handleHire(application._id, application.jobId._id)
+                        }
+                        edge="end"
+                        aria-label="check"
+                      >
+                        <CheckCircleOutline />
+                      </IconButton>
+                    ) : (
+                      <></>
+                    )
                   }
                 >
                   <ListItemAvatar>
@@ -65,8 +76,18 @@ export default function JobApplicationList({
                     </Avatar>
                   </ListItemAvatar>
                   <ListItemText
-                    primary={application.userId.name}
+                    primary={
+                      (job.chosenApplicationId === application._id
+                        ? '[Hired] '
+                        : '') + application.userId.name
+                    }
                     secondary={application.letter}
+                    sx={{
+                      color:
+                        job.chosenApplicationId === application._id
+                          ? 'green'
+                          : 'black',
+                    }}
                   />
                 </ListItem>
               ))}
@@ -76,6 +97,9 @@ export default function JobApplicationList({
           <div>No applications ... yet</div>
         )}
       </Grid>
-    </div>
+      <Snackbar open={!!error}>
+        <Alert severity="error">{error}</Alert>
+      </Snackbar>
+    </Paper>
   );
 }

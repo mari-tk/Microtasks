@@ -1,13 +1,27 @@
 import React from 'react';
+import moment from 'moment';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import * as jobsAPI from '../../utilities/jobs-api';
 import { Box } from '@mui/system';
 import { Button } from '@mui/base';
 import { useNavigate } from 'react-router-dom';
-import { Alert, CircularProgress, Snackbar } from '@mui/material';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import EditIcon from '@mui/icons-material/Edit';
+import CircleIcon from '@mui/icons-material/Circle';
+
+import {
+  Alert,
+  CircularProgress,
+  Grid,
+  IconButton,
+  Paper,
+  Snackbar,
+  Toolbar,
+  Typography,
+} from '@mui/material';
 import JobApplicationForm from '../../components/JobApplicationForm/JobApplicationForm';
-import JobApplicationList from '../../components/JobApplicationsList/JobApplicationsList';
+import JobApplicationsList from '../../components/JobApplicationsList/JobApplicationsList';
 
 export default function ViewJobPage({ user }) {
   const navigate = useNavigate();
@@ -16,31 +30,29 @@ export default function ViewJobPage({ user }) {
   const [viewError, setViewError] = useState('');
   // refactor id to jobId
   const { id } = useParams();
-  const [jobApplications, setJobApplications] = useState();
-  const [jobApplicationsState, setJobApplicationsState] = useState('loading');
+  const [jobApplications, setJobApplications] = useState([]);
 
   useEffect(function () {
     async function getJob() {
       try {
-        const thisJob = await jobsAPI.getJob(id);
-        setJob(thisJob);
-        if (thisJob.userId._id === user._id) {
-          setJobApplicationsState('loading');
-          try {
-            const allJobApplications = await jobsAPI.getJobApplications(id);
-            setJobApplications(allJobApplications);
-          } catch (e) {
-            setError(e.message);
-          }
-          setJobApplicationsState('done');
-        } else {
-          setJobApplicationsState('notAuthor');
-        }
+        setJob(await jobsAPI.getJob(id));
       } catch (e) {
         setViewError(e.message);
       }
     }
     getJob();
+  }, []);
+
+  useEffect(function () {
+    async function getJobApplications() {
+      try {
+        const allJobApplications = await jobsAPI.getJobApplications(id);
+        setJobApplications(allJobApplications);
+      } catch (e) {
+        setError(e.message);
+      }
+    }
+    getJobApplications();
   }, []);
 
   async function handleDelete(evt) {
@@ -65,27 +77,90 @@ export default function ViewJobPage({ user }) {
     return <CircularProgress />;
   }
 
+  let stateText, stateColor;
+
+  if (job.state === 'active') {
+    stateColor = 'green';
+    stateText = 'Active';
+  } else if (job.state === 'inProgress') {
+    stateColor = 'yellow';
+    stateText = 'Working';
+  } else {
+    stateColor = 'grey';
+    stateText = 'Inactive';
+  }
+
+  const isOwnJob = job.userId._id === user._id;
+
   return (
     <div>
-      <Box
+      <Paper
         sx={{
-          border: '2px',
+          mb: '30px',
           width: 600,
-          backgroundColor: 'primary.light',
         }}
+        elevation={3}
       >
-        <div>
-          Job {job.name} by {job.userId.name}
-        </div>
-        <div>Description {job.description}</div>
-        <div>Created {job.createdAt}</div>
-        <div>Status {job.state}</div>
-        <Button href={`/jobs/${job._id}/edit`}>Edit job</Button>
-        <Button onClick={handleDelete}>Delete job</Button>
-      </Box>
-      <JobApplicationList jobApplicationsState={jobApplicationsState} />
-      {jobApplicationsState === 'notAuthor' ? (
-        <JobApplicationForm user={user} job={job} />
+        <Toolbar
+          disableGutters
+          sx={{
+            backgroundColor: 'rgb(241,247,254)',
+          }}
+        >
+          <Grid container alignItems="left">
+            <Grid item xs={2}>
+              <Typography variant="h7">
+                <CircleIcon fontSize="small" sx={{ color: stateColor }} />
+                {stateText}
+              </Typography>
+            </Grid>
+            <Grid item xs={8}>
+              <Typography variant="h5">{job.name}</Typography>
+            </Grid>
+            <Grid item xs={2}>
+              <IconButton href={`/jobs/${job._id}/edit`}>
+                <EditIcon />
+              </IconButton>
+              <IconButton onClick={handleDelete}>
+                <DeleteForeverIcon />
+              </IconButton>
+            </Grid>
+          </Grid>
+        </Toolbar>
+        <Box
+          sx={{
+            margin: '20px',
+            textAlign: 'left',
+          }}
+        >
+          {job.description}
+        </Box>
+        <Box
+          sx={{
+            backgroundColor: 'rgb(245,245,245)',
+          }}
+        >
+          <Grid container alignItems="left">
+            <Grid item xs>
+              <Typography>
+                {job.userId.name} posted&nbsp;
+                {moment(job.createdAt).fromNow()}
+              </Typography>
+            </Grid>
+          </Grid>
+        </Box>
+      </Paper>
+      {isOwnJob || jobApplications.length ? (
+        <JobApplicationsList
+          job={job}
+          jobApplications={jobApplications}
+          isOwnJob={isOwnJob}
+        />
+      ) : (
+        <></>
+      )}
+      {!isOwnJob && !jobApplications.length ? (
+        <JobApplicationForm job={job} />
       ) : (
         <></>
       )}

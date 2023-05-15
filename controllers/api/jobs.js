@@ -74,10 +74,14 @@ async function editJob(req, res) {
 
 async function applyForJob(req, res) {
   try {
-    const jobApplication = await JobApplication.create(req.body);
+    const jobApplication = await JobApplication.create({
+      ...req.body,
+      userId: req.user._id,
+    });
     await jobApplication.populate('userId');
     res.json(jobApplication);
   } catch (error) {
+    console.log(error);
     res.status(400).json(error);
   }
 }
@@ -86,24 +90,35 @@ async function getJobApplications(req, res) {
   try {
     const applications = await JobApplication.find({ jobId: req.params.id })
       .sort({ createdAt: -1 })
-      .populate('userId');
-    res.json(applications);
+      .populate('userId')
+      .populate('jobId');
+    const filteredApplications = applications.filter(
+      (application) =>
+        application.userId._id.toString() === req.user._id ||
+        application.jobId.userId._id.toString() === req.user._id
+    );
+    res.json(filteredApplications);
   } catch (error) {
+    console.error(error);
     res.status(400).json(error);
   }
 }
 
 async function hire(req, res) {
   try {
-    console.log(req.body);
     const job = await Job.findOneAndUpdate(
-      { _id: req.params.id },
-      { state: 'in progress', chosenApplicationId: req.body.id },
+      { _id: req.params.id, state: 'active' },
+      { state: 'inProgress', chosenApplicationId: req.body.id },
       { new: true }
     );
+    if (!job) {
+      res.status(400).json({ message: 'Cannot hire - job is not active' });
+      return;
+    }
     await job.populate('userId');
     res.json(job);
   } catch (error) {
+    console.error(error);
     res.status(400).json(error);
   }
 }
@@ -114,7 +129,6 @@ async function showDashboard(req, res) {
     console.log(req.params.id);
     const applications = await Job.find({ userId: req.user._id })
       .sort({ createdAt: -1 })
-      .populate('jobId')
       .populate('userId');
     res.json(applications);
   } catch (error) {

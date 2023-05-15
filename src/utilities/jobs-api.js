@@ -44,3 +44,7 @@ export function endJob(jobId) {
   console.log(jobId);
   return sendRequest(`${BASE_URL}/${jobId}/end`, 'PUT');
 }
+
+export function getDashboard() {
+  return sendRequest(`${BASE_URL}/dashboard`);
+}

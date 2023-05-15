@@ -5,8 +5,9 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import * as jobsAPI from '../../utilities/jobs-api';
 import { useNavigate } from 'react-router-dom';
+import { Grid, Paper, Toolbar, Typography } from '@mui/material';
 
-export default function NewJobPage({ setJobs }) {
+export default function NewJobPage() {
   const navigate = useNavigate();
 
   const [job, setJob] = useState({
@@ -25,8 +26,7 @@ export default function NewJobPage({ setJobs }) {
     // Prevent form from being submitted to the server
     evt.preventDefault();
     try {
-      const newJob = await jobsAPI.createJob(job);
-      setJobs((jobs) => [...jobs, newJob]);
+      await jobsAPI.createJob(job);
       navigate('/jobs');
     } catch (e) {
       console.error(e);
@@ -35,9 +35,22 @@ export default function NewJobPage({ setJobs }) {
   }
 
   return (
-    <>
+    <Paper>
+      <Toolbar
+        disableGutters
+        sx={{
+          backgroundColor: 'rgb(241,247,254)',
+        }}
+      >
+        <Grid container alignItems="left">
+          <Grid item xs>
+            <Typography variant="h5">Create new job</Typography>
+          </Grid>
+        </Grid>
+      </Toolbar>
       <Box
         sx={{
+          margin: '15px',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
@@ -87,6 +100,6 @@ export default function NewJobPage({ setJobs }) {
           <p className="error-message">&nbsp;{error}</p>
         </Box>
       </Box>
-    </>
+    </Paper>
   );
 }
