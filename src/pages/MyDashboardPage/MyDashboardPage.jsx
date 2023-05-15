@@ -53,7 +53,7 @@ export default function MyDashboardPage({ user }) {
       >
         <Grid container>
           <Grid item xs>
-            <Typography variant="h5">MyDashboardPage</Typography>
+            <Typography variant="h5">My jobs dashboard</Typography>
           </Grid>
         </Grid>
       </Toolbar>

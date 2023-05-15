@@ -1,7 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import Application from '../../components/Application/Application';
 import * as applicationsAPI from '../../utilities/applications-api';
-import { Container } from '@mui/material';
+import {
+  Container,
+  Grid,
+  Paper,
+  Table,
+  TableBody,
+  TableContainer,
+  Toolbar,
+  Typography,
+} from '@mui/material';
 
 export default function MyApplicationsPage({ user }) {
   const [applications, setApplications] = useState([]);
@@ -19,17 +28,33 @@ export default function MyApplicationsPage({ user }) {
   }, []);
 
   return (
-    <Container
-      disableGutters
+    <Paper
       sx={{
-        maxHeight: 'calc(100vh - 64px)',
-        paddingTop: '64px',
+        margin: '15px',
       }}
     >
-      MY APPLICATIONS:
-      {applications.map((a, idx) => (
-        <Application application={a} key={idx} />
-      ))}
-    </Container>
+      <Toolbar
+        disableGutters
+        sx={{
+          backgroundColor: 'rgb(241,247,254)',
+        }}
+      >
+        <Grid container>
+          <Grid item xs>
+            <Typography variant="h5"> My applications</Typography>
+          </Grid>
+        </Grid>
+      </Toolbar>
+
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableBody>
+            {applications.map((a, idx) => (
+              <Application application={a} key={idx} />
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Paper>
   );
 }
