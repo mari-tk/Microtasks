@@ -16,18 +16,7 @@ import {
 import DescriptionIcon from '@mui/icons-material/Description';
 import React from 'react';
 
-export default function JobApplicationList({
-  jobApplicationsState,
-  jobApplications,
-}) {
-  if (jobApplicationsState === 'loading') {
-    return <CircularProgress />;
-  }
-
-  if (jobApplicationsState != 'done') {
-    return null;
-  }
-
+export default function JobApplicationList({ isOwnJob, jobApplications }) {
   async function handleHire(applicationId) {
     try {
       await jobsAPI.hireApplicant(applicationId, id);
@@ -49,7 +38,9 @@ export default function JobApplicationList({
         >
           <Grid container alignItems="left">
             <Grid item xs>
-              <Typography variant="h5">Job applications</Typography>
+              <Typography variant="h5">
+                {isOwnJob ? 'Job applications' : 'My application'}
+              </Typography>
             </Grid>
           </Grid>
         </Toolbar>
@@ -60,13 +51,17 @@ export default function JobApplicationList({
                 <ListItem
                   key={idx}
                   secondaryAction={
-                    <IconButton
-                      onClick={() => handleHire(application._id)}
-                      edge="end"
-                      aria-label="check"
-                    >
-                      <CheckCircleOutline />
-                    </IconButton>
+                    isOwnJob ? (
+                      <IconButton
+                        onClick={() => handleHire(application._id)}
+                        edge="end"
+                        aria-label="check"
+                      >
+                        <CheckCircleOutline />
+                      </IconButton>
+                    ) : (
+                      <></>
+                    )
                   }
                 >
                   <ListItemAvatar>

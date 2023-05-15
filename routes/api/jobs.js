@@ -8,11 +8,7 @@ router.get('/', jobsCtrl.getAllJobs);
 router.get('/dashboard', jobsCtrl.showDashboard);
 router.post('/new', jobsCtrl.createJob);
 
-router.get(
-  '/:id/applications',
-  jobsCtrl.ensureJobAuthor(),
-  jobsCtrl.getJobApplications
-);
+router.get('/:id/applications', jobsCtrl.getJobApplications);
 router.get('/:id', jobsCtrl.showJob);
 router.delete('/:id', jobsCtrl.ensureJobAuthor(), jobsCtrl.deleteJob);
 router.put('/:id/hire', jobsCtrl.ensureJobAuthor(), jobsCtrl.hire);

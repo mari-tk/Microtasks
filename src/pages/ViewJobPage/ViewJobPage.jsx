@@ -30,31 +30,29 @@ export default function ViewJobPage({ user }) {
   const [viewError, setViewError] = useState('');
   // refactor id to jobId
   const { id } = useParams();
-  const [jobApplications, setJobApplications] = useState();
-  const [jobApplicationsState, setJobApplicationsState] = useState('loading');
+  const [jobApplications, setJobApplications] = useState([]);
 
   useEffect(function () {
     async function getJob() {
       try {
-        const thisJob = await jobsAPI.getJob(id);
-        setJob(thisJob);
-        if (thisJob.userId._id === user._id) {
-          setJobApplicationsState('loading');
-          try {
-            const allJobApplications = await jobsAPI.getJobApplications(id);
-            setJobApplications(allJobApplications);
-          } catch (e) {
-            setError(e.message);
-          }
-          setJobApplicationsState('done');
-        } else {
-          setJobApplicationsState('notAuthor');
-        }
+        setJob(await jobsAPI.getJob(id));
       } catch (e) {
         setViewError(e.message);
       }
     }
     getJob();
+  }, []);
+
+  useEffect(function () {
+    async function getJobApplications() {
+      try {
+        const allJobApplications = await jobsAPI.getJobApplications(id);
+        setJobApplications(allJobApplications);
+      } catch (e) {
+        setError(e.message);
+      }
+    }
+    getJobApplications();
   }, []);
 
   async function handleDelete(evt) {
@@ -91,6 +89,8 @@ export default function ViewJobPage({ user }) {
     stateColor = 'grey';
     stateText = 'Inactive';
   }
+
+  const isOwnJob = job.userId._id === user._id;
 
   return (
     <div>
@@ -152,10 +152,10 @@ export default function ViewJobPage({ user }) {
       </Paper>
       <JobApplicationList
         jobApplications={jobApplications}
-        jobApplicationsState={jobApplicationsState}
+        isOwnJob={isOwnJob}
       />
-      {jobApplicationsState === 'notAuthor' ? (
-        <JobApplicationForm user={user} job={job} />
+      {!isOwnJob && !jobApplications.length ? (
+        <JobApplicationForm job={job} />
       ) : (
         <></>
       )}

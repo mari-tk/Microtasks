@@ -86,9 +86,16 @@ async function getJobApplications(req, res) {
   try {
     const applications = await JobApplication.find({ jobId: req.params.id })
       .sort({ createdAt: -1 })
-      .populate('userId');
-    res.json(applications);
+      .populate('userId')
+      .populate('jobId');
+    const filteredApplications = applications.filter(
+      (application) =>
+        application.userId._id.toString() === req.user._id ||
+        application.jobId.userId._id.toString() === req.user._id
+    );
+    res.json(filteredApplications);
   } catch (error) {
+    console.error(error);
     res.status(400).json(error);
   }
 }

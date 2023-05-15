@@ -2,32 +2,30 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import * as jobsAPI from '../../utilities/jobs-api';
 import {
+  Alert,
   Box,
   Button,
   Grid,
   Paper,
+  Snackbar,
   TextField,
   Toolbar,
   Typography,
 } from '@mui/material';
 
-export default function JobApplicationForm({ user, job }) {
-  const [application, setApplication] = useState({ letter: '' });
+export default function JobApplicationForm({ job }) {
+  const [letter, setLetter] = useState('');
   const [error, setError] = useState('');
 
   function handleChange(evt) {
-    setApplication({ ...application, [evt.target.name]: evt.target.value });
+    setLetter(evt.target.value);
     setError('');
   }
 
   async function handleSubmit(evt) {
     evt.preventDefault();
-    console.log(evt);
-    application.jobId = job._id;
-    application.userId = user._id;
-    console.log(application);
-    jobsAPI.applyForJob(application);
-    setApplication({ letter: '' });
+    jobsAPI.applyForJob({ jobId: job._id, letter });
+    setLetter('');
   }
 
   return (
@@ -54,7 +52,7 @@ export default function JobApplicationForm({ user, job }) {
             name="letter"
             label="write something..."
             type="text"
-            value={application.letter}
+            value={letter}
             onChange={handleChange}
           />
           <Button variant="contained" type="submit">
@@ -63,6 +61,9 @@ export default function JobApplicationForm({ user, job }) {
         </Box>
         <p className="error-message">&nbsp;{error}</p>
       </Grid>
+      <Snackbar open={!!error}>
+        <Alert severity="error">{error}</Alert>
+      </Snackbar>
     </Paper>
   );
 }
