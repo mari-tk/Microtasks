@@ -24,7 +24,11 @@ export function deleteJob(id) {
 }
 
 export function applyForJob(application) {
-  return sendRequest(`${BASE_URL}/${application.jobId}/apply`, 'POST', application);
+  return sendRequest(
+    `${BASE_URL}/${application.jobId}/apply`,
+    'POST',
+    application
+  );
 }
 
 export function getJobApplications(id) {
@@ -33,7 +37,7 @@ export function getJobApplications(id) {
 
 export function hireApplicant(applicationId, jobId) {
   console.log(jobId);
-  return sendRequest(`${BASE_URL}/${jobId}/hire`, 'PUT', {id: applicationId});
+  return sendRequest(`${BASE_URL}/${jobId}/hire`, 'PUT', { id: applicationId });
 }
 
 export function endJob(jobId) {
