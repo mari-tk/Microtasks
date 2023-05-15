@@ -1,5 +1,6 @@
 import { CheckCircleOutline } from '@mui/icons-material';
 import {
+  Alert,
   Avatar,
   Box,
   CircularProgress,
@@ -10,20 +11,23 @@ import {
   ListItemAvatar,
   ListItemText,
   Paper,
+  Snackbar,
   Toolbar,
   Typography,
 } from '@mui/material';
 import DescriptionIcon from '@mui/icons-material/Description';
-import React from 'react';
+import React, { useState } from 'react';
+import * as jobsAPI from '../../utilities/jobs-api';
 
-export default function JobApplicationList({ isOwnJob, jobApplications }) {
-  async function handleHire(applicationId) {
+export default function JobApplicationList({ isOwnJob, job, jobApplications }) {
+  const [error, setError] = useState('');
+
+  async function handleHire(applicationId, jobId) {
     try {
-      await jobsAPI.hireApplicant(applicationId, id);
-      navigate('/jobs/' + id);
+      await jobsAPI.hireApplicant(applicationId, jobId);
+      location.reload();
     } catch (e) {
-      console.error(e);
-      setError('Job was not deleted - Try Again');
+      setError(e.message);
     }
   }
 
@@ -51,9 +55,11 @@ export default function JobApplicationList({ isOwnJob, jobApplications }) {
                 <ListItem
                   key={idx}
                   secondaryAction={
-                    isOwnJob ? (
+                    isOwnJob && job.state === 'active' ? (
                       <IconButton
-                        onClick={() => handleHire(application._id)}
+                        onClick={() =>
+                          handleHire(application._id, application.jobId._id)
+                        }
                         edge="end"
                         aria-label="check"
                       >
@@ -70,8 +76,18 @@ export default function JobApplicationList({ isOwnJob, jobApplications }) {
                     </Avatar>
                   </ListItemAvatar>
                   <ListItemText
-                    primary={application.userId.name}
+                    primary={
+                      (job.chosenApplicationId === application._id
+                        ? '[Hired] '
+                        : '') + application.userId.name
+                    }
                     secondary={application.letter}
+                    sx={{
+                      color:
+                        job.chosenApplicationId === application._id
+                          ? 'green'
+                          : 'black',
+                    }}
                   />
                 </ListItem>
               ))}
@@ -81,6 +97,9 @@ export default function JobApplicationList({ isOwnJob, jobApplications }) {
           <div>No applications ... yet</div>
         )}
       </Grid>
+      <Snackbar open={!!error}>
+        <Alert severity="error">{error}</Alert>
+      </Snackbar>
     </Paper>
   );
 }

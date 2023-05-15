@@ -74,10 +74,14 @@ async function editJob(req, res) {
 
 async function applyForJob(req, res) {
   try {
-    const jobApplication = await JobApplication.create(req.body);
+    const jobApplication = await JobApplication.create({
+      ...req.body,
+      userId: req.user._id,
+    });
     await jobApplication.populate('userId');
     res.json(jobApplication);
   } catch (error) {
+    console.log(error);
     res.status(400).json(error);
   }
 }
@@ -102,15 +106,19 @@ async function getJobApplications(req, res) {
 
 async function hire(req, res) {
   try {
-    console.log(req.body);
     const job = await Job.findOneAndUpdate(
-      { _id: req.params.id },
-      { state: 'in progress', chosenApplicationId: req.body.id },
+      { _id: req.params.id, state: 'active' },
+      { state: 'inProgress', chosenApplicationId: req.body.id },
       { new: true }
     );
+    if (!job) {
+      res.status(400).json({ message: 'Cannot hire - job is not active' });
+      return;
+    }
     await job.populate('userId');
     res.json(job);
   } catch (error) {
+    console.error(error);
     res.status(400).json(error);
   }
 }

@@ -24,8 +24,9 @@ export default function JobApplicationForm({ job }) {
 
   async function handleSubmit(evt) {
     evt.preventDefault();
-    jobsAPI.applyForJob({ jobId: job._id, letter });
+    await jobsAPI.applyForJob({ jobId: job._id, letter });
     setLetter('');
+    location.reload();
   }
 
   return (

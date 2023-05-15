@@ -21,7 +21,7 @@ import {
   Typography,
 } from '@mui/material';
 import JobApplicationForm from '../../components/JobApplicationForm/JobApplicationForm';
-import JobApplicationList from '../../components/JobApplicationsList/JobApplicationsList';
+import JobApplicationsList from '../../components/JobApplicationsList/JobApplicationsList';
 
 export default function ViewJobPage({ user }) {
   const navigate = useNavigate();
@@ -84,7 +84,7 @@ export default function ViewJobPage({ user }) {
     stateText = 'Active';
   } else if (job.state === 'inProgress') {
     stateColor = 'yellow';
-    stateText = 'In Progress';
+    stateText = 'Working';
   } else {
     stateColor = 'grey';
     stateText = 'Inactive';
@@ -150,10 +150,15 @@ export default function ViewJobPage({ user }) {
           </Grid>
         </Box>
       </Paper>
-      <JobApplicationList
-        jobApplications={jobApplications}
-        isOwnJob={isOwnJob}
-      />
+      {isOwnJob || jobApplications.length ? (
+        <JobApplicationsList
+          job={job}
+          jobApplications={jobApplications}
+          isOwnJob={isOwnJob}
+        />
+      ) : (
+        <></>
+      )}
       {!isOwnJob && !jobApplications.length ? (
         <JobApplicationForm job={job} />
       ) : (
