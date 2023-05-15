@@ -1,10 +1,21 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import Job from '../../components/Job/Job';
+import * as jobsAPI from '../../utilities/jobs-api';
 import Button from '@mui/material/Button';
 import { Container } from '@mui/material';
 
-export default function JobsPage({ jobs }) {
+export default function JobsPage() {
+  const [jobs, setJobs] = useState([]);
+
+  useEffect(function () {
+    async function getJobs() {
+      const jobs = await jobsAPI.getAllJobs();
+      setJobs(jobs);
+    }
+    getJobs();
+  }, []);
+
   return (
     <Container
       disableGutters
